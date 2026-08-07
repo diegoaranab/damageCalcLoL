@@ -3,13 +3,54 @@
   const MIN_CC_DURATION = 0.5;
   let ccProfiles = {};
   let ccMeta = {};
+  let authoritativeDamageProfiles = {};
+  let authoritativeDamageReady = false;
 
   function pct(value) { return `${(value || 0).toFixed(1)}%`; }
   function setText(id, value) { const node = document.getElementById(id); if (node) node.textContent = value; }
 
+  function applyAuthoritativeDamageProfiles() {
+    if (typeof profiles !== "object" || !profiles) return;
+
+    // GitHub Actions-generated data is the single source of truth. Remove the
+    // original bundled Nocturne demonstration and any old browser overrides before
+    // exposing damage values to rendering/calculation.
+    for (const id of Object.keys(profiles)) delete profiles[id];
+    if (authoritativeDamageReady) Object.assign(profiles, authoritativeDamageProfiles);
+
+    try {
+      if (typeof STORAGE_PROFILES === "string") localStorage.removeItem(STORAGE_PROFILES);
+    } catch {
+      // Local storage can be unavailable in strict/private browser contexts. The
+      // in-memory authoritative dataset still remains the source used by the app.
+    }
+  }
+
+  function enforceGeneratedDamageUi() {
+    const caption = document.querySelector("#enemy-team-title + .panel-caption");
+    if (caption) caption.textContent = "Search by champion name. Damage profiles are refreshed automatically by GitHub Actions.";
+
+    const finePrint = document.querySelector(".fine-print");
+    if (finePrint) {
+      finePrint.textContent = "Damage statistics come from data/champion-damage.json, refreshed automatically by GitHub Actions. The generated dataset is the authoritative source used by the calculator.";
+    }
+
+    const toolbar = document.querySelector(".toolbar");
+    if (toolbar) toolbar.hidden = true;
+
+    // Generated profiles should not look locally editable. Keep only the remove
+    // button for selected champions.
+    document.querySelectorAll(".slot").forEach(slot => {
+      const edit = slot.querySelector('.slot-actions button[title^="Edit damage profile"], .slot-actions button[title^="Add damage profile"]');
+      if (edit) edit.remove();
+    });
+  }
+
   function injectUi() {
     const subtitle = document.querySelector(".subtitle");
     if (subtitle) subtitle.textContent = "Select the five enemy champions and compare their combined damage profile, Tenacity-reducible crowd control, and defensive boot tradeoffs.";
+
+    enforceGeneratedDamageUi();
 
     const summary = document.querySelector(".summary-wrap");
     const recommendation = summary?.querySelector(".recommendation");
@@ -211,7 +252,34 @@
     }
   }
 
+  // Remove local/bundled damage values immediately. The original inline loader may
+  // still be in flight, so render/calculate wrappers below re-apply this policy every
+  // time the UI updates until the generated dataset has loaded.
+  applyAuthoritativeDamageProfiles();
   injectUi();
+
+  if (typeof renderSlots === "function") {
+    const originalRenderSlots = renderSlots;
+    renderSlots = function() {
+      applyAuthoritativeDamageProfiles();
+      originalRenderSlots();
+      enforceGeneratedDamageUi();
+    };
+  }
+
+  if (typeof calculate === "function") {
+    const originalCalculate = calculate;
+    calculate = function() {
+      applyAuthoritativeDamageProfiles();
+      return originalCalculate();
+    };
+  }
+
+  if (typeof openStatsDialog === "function") {
+    openStatsDialog = function() {
+      if (typeof showToast === "function") showToast("Damage profiles are managed by GitHub Actions");
+    };
+  }
 
   if (typeof updateRecommendation === "function") {
     const originalUpdateRecommendation = updateRecommendation;
@@ -223,6 +291,39 @@
       enhanceRecommendation(shares, selectedCount, readyCount, cc);
     };
   }
+
+  fetch(`./data/champion-damage.json?ts=${Date.now()}`, { cache: "no-store" })
+    .then(response => {
+      if (!response.ok) throw new Error(`Damage data request failed: ${response.status}`);
+      return response.json();
+    })
+    .then(payload => {
+      authoritativeDamageProfiles = payload.champions || {};
+      authoritativeDamageReady = true;
+      applyAuthoritativeDamageProfiles();
+
+      const generatedAt = payload.meta?.generatedAt;
+      if (generatedAt) {
+        const formatted = new Intl.DateTimeFormat("en", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }).format(new Date(generatedAt));
+        setText("data-freshness", `Updated ${formatted}`);
+      }
+
+      if (typeof renderSlots === "function") renderSlots();
+      if (typeof calculate === "function") calculate();
+    })
+    .catch(error => {
+      console.warn("Could not load authoritative champion damage data.", error);
+      authoritativeDamageProfiles = {};
+      authoritativeDamageReady = false;
+      applyAuthoritativeDamageProfiles();
+      setText("data-freshness", "Automated data unavailable");
+      if (typeof renderSlots === "function") renderSlots();
+      if (typeof calculate === "function") calculate();
+      if (typeof showToast === "function") showToast("Automated damage data unavailable");
+    });
 
   fetch(`./data/champion-cc.json?ts=${Date.now()}`, { cache: "no-store" })
     .then(response => {
