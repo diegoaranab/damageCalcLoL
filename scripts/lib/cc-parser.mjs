@@ -20,26 +20,32 @@ const HARD_CC = new Set([
   "taunt"
 ]);
 
+// These expressions intentionally prefer verbs/effect wording over bare nouns. That
+// avoids treating references such as "champions hit by Charm" as if the current
+// ability itself applied a charm.
 const EFFECT_PATTERNS = [
   { type: "suppression", re: /\b(?:suppress(?:es|ed|ing)?|suppression)\b/gi },
-  { type: "stasis", re: /\b(?:stasis|put(?:s|ting)? .{0,18} into stasis)\b/gi },
+  { type: "stasis", re: /\b(?:stasis|put(?:s|ting)?\s+[^.!?;]{0,30}\s+into stasis)\b/gi },
   { type: "nearsight", re: /\b(?:nearsight(?:ed|s|ing)?|nearsighted)\b/gi },
   { type: "drowsy", re: /\bdrows(?:y|iness)\b/gi },
-  { type: "sleep", re: /\b(?:sleep|sleeps|asleep)\b/gi },
-  { type: "airborne", re: /\b(?:airborne|knock(?:s|ed|ing)?\s+(?:up|back|aside)|pull(?:s|ed|ing)?\s+(?:them|the target|enemy|enemies)?|drag(?:s|ged|ging)?\s+(?:them|the target|enemy|enemies)?)\b/gi },
-  { type: "polymorph", re: /\bpolymorph(?:s|ed|ing)?\b/gi },
-  { type: "charm", re: /\bcharm(?:s|ed|ing)?\b/gi },
-  { type: "fear", re: /\b(?:fear(?:s|ed|ing)?|terrify|terrifies|terrified)\b/gi },
+  { type: "sleep", re: /\b(?:puts?\s+[^.!?;]{0,35}\s+to sleep|falls? asleep|asleep|sleeping)\b/gi },
+  {
+    type: "airborne",
+    re: /\b(?:airborne|knock(?:s|ed|ing)?\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)?\s*(?:up|back|aside)|knock[- ]?(?:up|back)|toss(?:es|ed|ing)?\s+[^.!?;]{0,30}\s+(?:into the air|upward)|launch(?:es|ed|ing)?\s+[^.!?;]{0,30}\s+(?:into the air|upward)|pull(?:s|ed|ing)?\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b|drag(?:s|ged|ging)?\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b|fling(?:s|ing)?\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b|displac(?:e|es|ed|ing)\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?))\b/gi
+  },
+  { type: "polymorph", re: /\b(?:polymorph(?:s|ed|ing)?|turn(?:s|ed|ing)?\s+[^.!?;]{0,25}\s+into a harmless)\b/gi },
+  { type: "charm", re: /\b(?:charm(?:s|ed|ing)|to charm)\b/gi },
+  { type: "fear", re: /\b(?:fear(?:s|ed|ing)|terrify|terrifies|terrified|terrifying)\b/gi },
   { type: "flee", re: /\b(?:flee|flees|fleeing)\b/gi },
-  { type: "taunt", re: /\btaunt(?:s|ed|ing)?\b/gi },
-  { type: "stun", re: /\bstun(?:s|ned|ning)?\b/gi },
-  { type: "root", re: /\b(?:root(?:s|ed|ing)?|snare(?:s|d|ing)?|immobiliz(?:e|es|ed|ing))\b/gi },
-  { type: "silence", re: /\bsilenc(?:e|es|ed|ing)\b/gi },
-  { type: "ground", re: /\bground(?:s|ed|ing)?\b/gi },
-  { type: "blind", re: /\bblind(?:s|ed|ing)?\b/gi },
-  { type: "disarm", re: /\bdisarm(?:s|ed|ing)?\b/gi },
-  { type: "cripple", re: /\bcrippl(?:e|es|ed|ing)\b/gi },
-  { type: "slow", re: /\bslow(?:s|ed|ing)?\b/gi }
+  { type: "taunt", re: /\b(?:taunt(?:s|ed|ing)|to taunt)\b/gi },
+  { type: "stun", re: /\b(?:stun(?:s|ned|ning)|to stun)\b/gi },
+  { type: "root", re: /\b(?:root(?:s|ed|ing)|to root|snare(?:s|d|ing)|to snare|immobiliz(?:e|es|ed|ing))\b/gi },
+  { type: "silence", re: /\b(?:silenc(?:e|es|ed|ing)|to silence)\b/gi },
+  { type: "ground", re: /\b(?:ground(?:s|ed|ing)|to ground)\b/gi },
+  { type: "blind", re: /\b(?:blind(?:s|ed|ing)|to blind)\b/gi },
+  { type: "disarm", re: /\b(?:disarm(?:s|ed|ing)|to disarm)\b/gi },
+  { type: "cripple", re: /\b(?:crippl(?:e|es|ed|ing)|to cripple)\b/gi },
+  { type: "slow", re: /\b(?:slow(?:s|ed|ing)|to slow)\b/gi }
 ];
 
 export const MERCS_TENACITY = 0.30;
@@ -80,7 +86,7 @@ function parseNumberList(raw) {
 
 export function extractDuration(sentence, matchIndex = 0) {
   const windows = [
-    sentence.slice(Math.max(0, matchIndex - 55), Math.min(sentence.length, matchIndex + 125)),
+    sentence.slice(Math.max(0, matchIndex - 80), Math.min(sentence.length, matchIndex + 150)),
     sentence
   ];
 
@@ -115,7 +121,15 @@ function isPersistent(sentence) {
   return /\b(?:zone|area|while|remains?|lingers?|continuously|continually|every \d|per second|inside|within)\b/i.test(sentence);
 }
 
-export function parseCrowdControlText(rawText, options = {}) {
+function isNonChampionOnly(sentence) {
+  // The common example is Aatrox R fearing nearby enemy minions. Do not make that
+  // count toward a champion-vs-champion Tenacity decision.
+  return /\b(?:enemy\s+)?minions?\b/i.test(sentence) &&
+    !/\bchampions?\b/i.test(sentence) &&
+    !/\b(?:all|nearby|hit|affected)\s+enemies\b/i.test(sentence);
+}
+
+export function parseCrowdControlText(rawText) {
   const text = stripMarkup(rawText);
   if (!text) return [];
 
@@ -127,8 +141,8 @@ export function parseCrowdControlText(rawText, options = {}) {
     while ((match = re.exec(text)) !== null) {
       const sentence = sentenceAround(text, match.index);
 
-      // Avoid common non-enemy/self references that otherwise create false positives.
       if (/\b(?:immune to|removes? (?:all )?slows?|slow resistance|cannot be slowed|self[- ]slow)\b/i.test(sentence)) continue;
+      if (isNonChampionOnly(sentence)) continue;
 
       const duration = extractDuration(sentence, Math.max(0, match.index - text.indexOf(sentence)));
       effects.push({
@@ -138,15 +152,13 @@ export function parseCrowdControlText(rawText, options = {}) {
         durationSeconds: duration?.max ?? null,
         durationMinSeconds: duration?.min ?? null,
         durationValues: duration?.values ?? null,
+        durationSource: duration ? "description" : null,
         persistent: isPersistent(sentence),
         sourceText: sentence
       });
     }
   }
 
-  // Airborne descriptions often also use "stun/immobilize" as explanatory wording.
-  // When both are detected from the same sentence, keep the displacement because it
-  // represents the actual tenacity interaction and avoids double-counting.
   const cleaned = effects.filter((effect, index, all) => {
     if (!["stun", "root"].includes(effect.type)) return true;
     return !all.some(other =>
@@ -156,13 +168,24 @@ export function parseCrowdControlText(rawText, options = {}) {
     );
   });
 
-  const seen = new Set();
-  return cleaned.filter(effect => {
-    const key = [effect.type, effect.durationSeconds, effect.sourceText].join("|");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  // One ability should expose one entry per CC type in the final semantic model.
+  // Prefer the occurrence with a known duration over a duplicate prose mention.
+  const byType = new Map();
+  for (const effect of cleaned) {
+    const current = byType.get(effect.type);
+    if (!current || (!Number.isFinite(current.durationSeconds) && Number.isFinite(effect.durationSeconds))) {
+      byType.set(effect.type, effect);
+    }
+  }
+  return [...byType.values()];
+}
+
+export function isHardCrowdControl(type) {
+  return HARD_CC.has(type);
+}
+
+export function isTenacityAffected(type) {
+  return !TENACITY_UNAFFECTED.has(type);
 }
 
 export function summarizeChampionCc(abilities, tenacity = MERCS_TENACITY) {
