@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/test-parser.mjs",
-    "scrape": "node scripts/scrape-lolalytics.mjs"
+    "test": "node scripts/test-parser.mjs && node scripts/test-cc-parser.mjs",
+    "test:damage": "node scripts/test-parser.mjs",
+    "test:cc": "node scripts/test-cc-parser.mjs",
+    "scrape": "node scripts/scrape-lolalytics.mjs",
+    "cc:check": "node scripts/check-patch.mjs",
+    "cc:build": "node scripts/build-cc-data.mjs"
   },
   "engines": {
     "node": ">=22"
