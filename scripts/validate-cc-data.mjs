@@ -55,6 +55,16 @@ assert.equal(vexFear?.durationSeconds, 1.5, "Vex Doom maximum fear duration must
 assert.equal(vexPassive.filter(effect => effect.hard).length, 1, "Vex Doom fear/flee wording must not double-count hard CC");
 assert.ok(champions.Vex?.summary?.reducibleHardSeconds >= 1.5, "Vex must contribute her passive fear to hard-CC seconds");
 
+const threshQ = effectsFor("Thresh", "Q");
+const threshStun = threshQ.find(effect => effect.type === "stun");
+assert.ok(threshStun?.tenacityAffected, "Thresh Q must expose its Tenacity-reducible stun");
+assert.equal(threshStun?.durationSeconds, 1.5, "Thresh Q stun duration must resolve to 1.5 seconds");
+assert.ok(
+  threshStun?.concurrentEffects?.some(effect => effect.type === "airborne" && effect.durationSeconds === 0.4),
+  "Thresh Q must preserve its 0.4s airborne overlap without double-counting it"
+);
+assert.ok(champions.Thresh?.summary?.hardSecondsSavedByMercs >= 0.45, "Mercury's Treads must save at least 0.45s against Thresh Q alone");
+
 assert.equal(champions.Lucian?.summary?.totalEffects || 0, 0, "Lucian should not contribute crowd control");
 
 console.log(
