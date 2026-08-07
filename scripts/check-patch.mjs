@@ -3,7 +3,7 @@ import { appendFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const CC_PATH = resolve("site/data/champion-cc.json");
-const EXPECTED_PARSER_VERSION = 4;
+const EXPECTED_PARSER_VERSION = 5;
 
 async function currentPatch() {
   const response = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
