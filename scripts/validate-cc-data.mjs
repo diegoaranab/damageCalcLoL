@@ -79,6 +79,14 @@ assert.ok(
 );
 assert.ok(champions.Thresh?.summary?.hardSecondsSavedByMercs >= 0.45, "Mercury's Treads must save at least 0.45s against Thresh Q alone");
 
+const braumPassive = effectsFor("Braum", "P");
+const braumStun = braumPassive.find(effect => effect.type === "stun");
+assert.ok(braumStun?.tenacityAffected, "Braum P must expose its Tenacity-reducible stun");
+assert.equal(braumStun?.durationMinSeconds, 1.25, "Braum P minimum stun duration must resolve to 1.25 seconds");
+assert.equal(braumStun?.durationSeconds, 1.75, "Braum P maximum stun duration must resolve to 1.75 seconds");
+assert.ok(champions.Braum?.summary?.reducibleHardSeconds >= 1.75, "Braum must contribute Concussive Blows to hard-CC seconds");
+assert.ok(champions.Braum?.summary?.hardSecondsSavedByMercs >= 0.52, "Mercury's Treads should save about 0.525s against max-duration Braum passive stun");
+
 assert.equal(champions.Lucian?.summary?.totalEffects || 0, 0, "Lucian should not contribute crowd control");
 
 console.log(
