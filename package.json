@@ -9,7 +9,8 @@
     "test:cc": "node scripts/test-cc-parser.mjs",
     "scrape": "node scripts/scrape-lolalytics.mjs",
     "cc:check": "node scripts/check-patch.mjs",
-    "cc:build": "node scripts/build-cc-data.mjs"
+    "cc:build": "node scripts/build-cc-data.mjs",
+    "ui:enable": "node scripts/enable-cc-ui.mjs"
   },
   "engines": {
     "node": ">=22"
