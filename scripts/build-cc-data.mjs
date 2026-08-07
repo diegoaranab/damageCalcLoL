@@ -273,7 +273,7 @@ async function main() {
       source: merakiChampions
         ? "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster"
         : "Riot Data Dragon fallback only",
-      parserVersion: 3,
+      parserVersion: 4,
       mercurysTreadsTenacity: MERCS_TENACITY,
       tenacityMinimumDurationSeconds: 0.5,
       tenacityUnaffected: ["airborne/displacements", "drowsy", "nearsight", "stasis", "suppression"],

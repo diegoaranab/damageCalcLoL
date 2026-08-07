@@ -25,24 +25,24 @@
       </div>
       <div class="cc-grid">
         <div class="cc-metric">
-          <div class="cc-metric-label">Potential hard CC</div>
+          <div class="cc-metric-label">Known hard CC</div>
           <div class="cc-metric-value" id="cc-hard-total">0.0s</div>
-          <div class="cc-metric-sub">Known explicit durations</div>
+          <div class="cc-metric-sub">Potential effective hard-CC budget</div>
         </div>
         <div class="cc-metric">
-          <div class="cc-metric-label">Affected by Tenacity</div>
+          <div class="cc-metric-label">Tenacity-reducible</div>
           <div class="cc-metric-value" id="cc-reducible-hard">0.0s</div>
-          <div class="cc-metric-sub">Hard CC Mercs can shorten</div>
+          <div class="cc-metric-sub">This portion is shortened, not removed</div>
         </div>
         <div class="cc-metric">
-          <div class="cc-metric-label">With Mercury's Treads</div>
+          <div class="cc-metric-label">After Mercury's Treads</div>
           <div class="cc-metric-value" id="cc-with-mercs">0.0s</div>
-          <div class="cc-metric-sub">Known hard-CC budget after 30% Tenacity</div>
+          <div class="cc-metric-sub" id="cc-after-mercs-label">Known hard CC after 30% Tenacity</div>
         </div>
         <div class="cc-metric">
-          <div class="cc-metric-label">Hard-CC time saved</div>
+          <div class="cc-metric-label">Mercs time saved</div>
           <div class="cc-metric-value" id="cc-time-saved">0.0s</div>
-          <div class="cc-metric-sub" id="cc-unaffected-label">0.0s unaffected</div>
+          <div class="cc-metric-sub" id="cc-unaffected-label">0.0s known hard CC unaffected</div>
         </div>
       </div>
       <p class="cc-note" id="cc-note">This is a potential CC budget, not a prediction of one perfect chain.</p>
@@ -90,28 +90,33 @@
       total.coveredChampions += 1;
       const summary = profile.summary || {};
       for (const key of Object.keys(total)) {
-        if (["coveredChampions", "selectedChampions"].includes(key)) continue;
+        if (["coveredChampions", "selectedChampions", "hardSecondsSavedByMercs", "softSecondsSavedByMercs"].includes(key)) continue;
         total[key] += Number(summary[key] || 0);
       }
     }
+
+    total.hardSecondsSavedByMercs = Math.max(0, total.reducibleHardSeconds - total.reducibleHardSecondsWithMercs);
+    total.softSecondsSavedByMercs = Math.max(0, total.reducibleSoftSeconds - total.reducibleSoftSecondsWithMercs);
     return total;
   }
 
   function renderCrowdControl(cc, selected) {
     const hardTotal = cc.reducibleHardSeconds + cc.unreducibleHardSeconds;
     const hardWithMercs = cc.reducibleHardSecondsWithMercs + cc.unreducibleHardSeconds;
+    const hardSaved = Math.max(0, hardTotal - hardWithMercs);
     setText("cc-hard-total", `${hardTotal.toFixed(1)}s`);
     setText("cc-reducible-hard", `${cc.reducibleHardSeconds.toFixed(1)}s`);
     setText("cc-with-mercs", `${hardWithMercs.toFixed(1)}s`);
-    setText("cc-time-saved", `${cc.hardSecondsSavedByMercs.toFixed(1)}s`);
+    setText("cc-time-saved", `${hardSaved.toFixed(1)}s`);
+    setText("cc-after-mercs-label", `${hardTotal.toFixed(1)}s − ${hardSaved.toFixed(1)}s saved = ${hardWithMercs.toFixed(1)}s`);
     setText("cc-unaffected-label", `${cc.unreducibleHardSeconds.toFixed(1)}s known hard CC unaffected`);
     setText("cc-coverage", `${cc.coveredChampions}/${selected.length || 5} selected${ccMeta.patch ? ` · patch ${ccMeta.patch}` : ""}`);
 
     const unknown = cc.unknownDurationEffects;
     setText("cc-note",
-      `Potential budget from explicit tooltip durations. Mercs save ${cc.softSecondsSavedByMercs.toFixed(1)}s across known reducible soft CC as well.` +
+      `Tenacity-reducible means the listed ${cc.reducibleHardSeconds.toFixed(1)}s can be shortened; it is not removed outright. Mercs save ${hardSaved.toFixed(1)}s of known hard CC and ${cc.softSecondsSavedByMercs.toFixed(1)}s across known reducible soft CC.` +
       (unknown ? ` ${unknown} detected CC effect${unknown === 1 ? " has" : "s have"} no explicit duration and are not added to the seconds total.` : "") +
-      " Displacements, drowsy, nearsight, stasis, and suppression are not shortened by Tenacity."
+      " Overlapping simultaneous hard CC is counted as one effective lockout window. Displacements, drowsy, nearsight, stasis, and suppression are not shortened by Tenacity."
     );
 
     const container = document.getElementById("cc-breakdown");
@@ -144,12 +149,17 @@
           let duration = "duration not explicit";
           if (Number.isFinite(effect.durationSeconds)) {
             const reduced = effect.tenacityAffected
-              ? Math.max(MIN_CC_DURATION, effect.durationSeconds * (1 - MERCS_TENACITY))
+              ? Math.min(effect.durationSeconds, Math.max(MIN_CC_DURATION, effect.durationSeconds * (1 - MERCS_TENACITY)))
               : effect.durationSeconds;
             duration = effect.tenacityAffected
               ? `${effect.durationSeconds.toFixed(1)}s → ${reduced.toFixed(1)}s`
               : `${effect.durationSeconds.toFixed(1)}s unchanged`;
           }
+          const overlap = (effect.concurrentEffects || [])
+            .filter(item => Number.isFinite(item.durationSeconds))
+            .map(item => `${item.durationSeconds.toFixed(1)}s ${item.type}`)
+            .join(", ");
+          if (overlap) duration += ` · overlaps ${overlap}`;
           chip.innerHTML = `<strong>${effect.slot}</strong> ${type} · ${duration}`;
           chip.title = `${effect.abilityName}: ${effect.sourceText || ""}`;
           chips.append(chip);

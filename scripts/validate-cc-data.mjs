@@ -22,6 +22,20 @@ assert.ok(
   `Known-duration hard-CC coverage is ${(hardCoverage * 100).toFixed(1)}%; expected at least 45%`
 );
 
+for (const champion of Object.values(champions)) {
+  const summary = champion.summary || {};
+  assert.ok(
+    Number(summary.reducibleHardSecondsWithMercs || 0) <= Number(summary.reducibleHardSeconds || 0) + 1e-9,
+    `${champion.name}: Mercs must not increase reducible hard-CC duration`
+  );
+  assert.ok(
+    Number(summary.reducibleSoftSecondsWithMercs || 0) <= Number(summary.reducibleSoftSeconds || 0) + 1e-9,
+    `${champion.name}: Mercs must not increase reducible soft-CC duration`
+  );
+  assert.ok(Number(summary.hardSecondsSavedByMercs || 0) >= -1e-9, `${champion.name}: hard-CC savings must not be negative`);
+  assert.ok(Number(summary.softSecondsSavedByMercs || 0) >= -1e-9, `${champion.name}: soft-CC savings must not be negative`);
+}
+
 function effectsFor(championId, slot) {
   return (champions[championId]?.abilities || [])
     .filter(ability => ability.slot === slot || ability.slot.startsWith(slot))
@@ -54,6 +68,16 @@ assert.equal(vexFear?.durationMinSeconds, 0.75, "Vex Doom minimum fear duration 
 assert.equal(vexFear?.durationSeconds, 1.5, "Vex Doom maximum fear duration must resolve");
 assert.equal(vexPassive.filter(effect => effect.hard).length, 1, "Vex Doom fear/flee wording must not double-count hard CC");
 assert.ok(champions.Vex?.summary?.reducibleHardSeconds >= 1.5, "Vex must contribute her passive fear to hard-CC seconds");
+
+const threshQ = effectsFor("Thresh", "Q");
+const threshStun = threshQ.find(effect => effect.type === "stun");
+assert.ok(threshStun?.tenacityAffected, "Thresh Q must expose its Tenacity-reducible stun");
+assert.equal(threshStun?.durationSeconds, 1.5, "Thresh Q stun duration must resolve to 1.5 seconds");
+assert.ok(
+  threshStun?.concurrentEffects?.some(effect => effect.type === "airborne" && effect.durationSeconds === 0.4),
+  "Thresh Q must preserve its 0.4s airborne overlap without double-counting it"
+);
+assert.ok(champions.Thresh?.summary?.hardSecondsSavedByMercs >= 0.45, "Mercury's Treads must save at least 0.45s against Thresh Q alone");
 
 assert.equal(champions.Lucian?.summary?.totalEffects || 0, 0, "Lucian should not contribute crowd control");
 
