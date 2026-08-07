@@ -36,6 +36,11 @@ assert.equal(vexFear.durationSeconds, 1.5);
 assert.equal(vexFear.tenacityAffected, true);
 assert.equal(vexDoom.filter(effect => effect.hard).length, 1, "Vex fear/flee variants must represent one hard-CC event");
 
+const statScaledSlow = parseCrowdControlText("Xin Zhao slows the target for 1.5 (+ 0.5 per 100 AP) seconds.");
+assert.equal(statScaledSlow.length, 1);
+assert.equal(statScaledSlow[0].type, "slow");
+assert.equal(statScaledSlow[0].durationSeconds, null, "stat-scaled duration formulas must not be flattened to their base value");
+
 const ahriOrb = parseCrowdControlText("Ahri sends out and pulls back her orb, dealing magic damage on the way out and true damage on the way back.");
 assert.equal(ahriOrb.length, 0, "pulling back an owned projectile must not count as displacement CC");
 
