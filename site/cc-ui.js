@@ -9,12 +9,31 @@
   function pct(value) { return `${(value || 0).toFixed(1)}%`; }
   function setText(id, value) { const node = document.getElementById(id); if (node) node.textContent = value; }
 
+  function generatedProfilesFromMemory() {
+    if (typeof profiles !== "object" || !profiles) return {};
+    return Object.fromEntries(
+      Object.entries(profiles).filter(([, profile]) =>
+        profile &&
+        typeof profile.sourceUrl === "string" &&
+        /^https:\/\/lolalytics\.com\/lol\//i.test(profile.sourceUrl)
+      )
+    );
+  }
+
   function applyAuthoritativeDamageProfiles() {
     if (typeof profiles !== "object" || !profiles) return;
 
-    // GitHub Actions-generated data is the single source of truth. Remove the
-    // original bundled Nocturne demonstration and any old browser overrides before
-    // exposing damage values to rendering/calculation.
+    // The GitHub Actions-generated Lolalytics dataset is the single source of truth.
+    // If the original inline loader has already completed, recover only entries that
+    // carry the generated source URL; this excludes bundled/manual browser profiles.
+    if (!authoritativeDamageReady) {
+      const recovered = generatedProfilesFromMemory();
+      if (Object.keys(recovered).length) {
+        authoritativeDamageProfiles = recovered;
+        authoritativeDamageReady = true;
+      }
+    }
+
     for (const id of Object.keys(profiles)) delete profiles[id];
     if (authoritativeDamageReady) Object.assign(profiles, authoritativeDamageProfiles);
 
@@ -22,7 +41,7 @@
       if (typeof STORAGE_PROFILES === "string") localStorage.removeItem(STORAGE_PROFILES);
     } catch {
       // Local storage can be unavailable in strict/private browser contexts. The
-      // in-memory authoritative dataset still remains the source used by the app.
+      // in-memory generated dataset still remains the source used by the app.
     }
   }
 
@@ -252,9 +271,9 @@
     }
   }
 
-  // Remove local/bundled damage values immediately. The original inline loader may
-  // still be in flight, so render/calculate wrappers below re-apply this policy every
-  // time the UI updates until the generated dataset has loaded.
+  // Remove bundled/manual values immediately. If the original inline loader has
+  // already completed, applyAuthoritativeDamageProfiles() preserves only entries
+  // proven to originate from the generated Lolalytics dataset.
   applyAuthoritativeDamageProfiles();
   injectUi();
 
@@ -315,7 +334,21 @@
       if (typeof calculate === "function") calculate();
     })
     .catch(error => {
-      console.warn("Could not load authoritative champion damage data.", error);
+      console.warn("Could not load the secondary generated damage request.", error);
+
+      // The page's original loader may already have fetched the same generated file.
+      // Preserve those verified sourceUrl-backed entries instead of clearing valid
+      // GitHub Actions data because only this redundant request failed.
+      const recovered = generatedProfilesFromMemory();
+      if (Object.keys(recovered).length) {
+        authoritativeDamageProfiles = recovered;
+        authoritativeDamageReady = true;
+        applyAuthoritativeDamageProfiles();
+        if (typeof renderSlots === "function") renderSlots();
+        if (typeof calculate === "function") calculate();
+        return;
+      }
+
       authoritativeDamageProfiles = {};
       authoritativeDamageReady = false;
       applyAuthoritativeDamageProfiles();
