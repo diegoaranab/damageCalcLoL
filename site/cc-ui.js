@@ -149,7 +149,7 @@
           let duration = "duration not explicit";
           if (Number.isFinite(effect.durationSeconds)) {
             const reduced = effect.tenacityAffected
-              ? Math.max(MIN_CC_DURATION, effect.durationSeconds * (1 - MERCS_TENACITY))
+              ? Math.min(effect.durationSeconds, Math.max(MIN_CC_DURATION, effect.durationSeconds * (1 - MERCS_TENACITY)))
               : effect.durationSeconds;
             duration = effect.tenacityAffected
               ? `${effect.durationSeconds.toFixed(1)}s → ${reduced.toFixed(1)}s`
