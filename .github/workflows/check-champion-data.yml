@@ -20,6 +20,7 @@ on:
     branches: [main]
     paths:
       - "scripts/build-cc-data.mjs"
+      - "scripts/check-patch.mjs"
       - "scripts/validate-cc-data.mjs"
       - "scripts/lib/cc-parser.mjs"
       - "scripts/test-cc-parser.mjs"
@@ -98,22 +99,31 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path("_vendor/lolstaticdata/lolstaticdata/champions/pull_champions_wiki.py")
           text = path.read_text(encoding="utf-8")
-          old = '''                modifier = Modifier(
-                      values=[0 for _ in range(nvalues)],
-                      units=[lvling for _ in range(nvalues)],
-                  )
-                  modifiers.append(modifier)'''
-          new = '''                # Damage Draft only needs successfully parsed semantic values.
-                  # Current Wiki rows can occasionally omit nvalues; Meraki's fallback
-                  # calls range(None) and aborts the whole roster. Skip only that
-                  # unparseable modifier and retain the rest of the ability data.
-                  continue'''
-          if old not in text:
-              raise SystemExit("Expected Meraki fallback block was not found; review upstream changes.")
-          path.write_text(text.replace(old, new), encoding="utf-8")
+          pattern = re.compile(
+              r"(?m)^(?P<indent>[ \t]*)modifier = Modifier\(\n"
+              r"[ \t]*values=\[0 for _ in range\(nvalues\)\],\n"
+              r"[ \t]*units=\[lvling for _ in range\(nvalues\)\],\n"
+              r"[ \t]*\)\n"
+              r"[ \t]*modifiers\.append\(modifier\)"
+          )
+
+          def replacement(match):
+              indent = match.group("indent")
+              return (
+                  f"{indent}# Damage Draft only needs successfully parsed semantic values.\n"
+                  f"{indent}# Current Wiki rows can omit nvalues; skip only this failed\n"
+                  f"{indent}# modifier instead of aborting the entire champion roster.\n"
+                  f"{indent}continue"
+              )
+
+          patched, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f"Expected one Meraki fallback block, patched {count}; review upstream changes.")
+          path.write_text(patched, encoding="utf-8")
           print("Applied narrow Meraki leveling fallback compatibility patch.")
           PY
 
