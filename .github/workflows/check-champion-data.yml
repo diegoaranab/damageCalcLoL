@@ -42,7 +42,9 @@ permissions:
 
 concurrency:
   group: champion-ability-data-${{ github.ref }}
-  cancel-in-progress: false
+  # PR pushes supersede their own older validation runs. Production/scheduled runs
+  # are never cancelled midway, because those may be committing refreshed data.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   check:
