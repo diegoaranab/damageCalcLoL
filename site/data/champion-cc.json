@@ -1,9 +1,9 @@
 {
   "meta": {
-    "generatedAt": "2026-08-07T07:55:10.862Z",
+    "generatedAt": "2026-08-07T08:47:53.240Z",
     "patch": "16.15.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
-    "parserVersion": 4,
+    "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
     "tenacityMinimumDurationSeconds": 0.5,
     "tenacityUnaffected": [
@@ -17,9 +17,9 @@
     "champions": 173,
     "wikiChampions": 173,
     "fallbackChampions": 0,
-    "parsedEffects": 459,
-    "knownDurationEffects": 346,
-    "timedCoveragePercent": 75.4,
+    "parsedEffects": 457,
+    "knownDurationEffects": 357,
+    "timedCoveragePercent": 78.1,
     "failures": []
   },
   "champions": {
@@ -1036,10 +1036,11 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 1,
+              "durationSeconds": 3.5,
               "durationMinSeconds": 1,
               "durationValues": [
-                1
+                1,
+                3.5
               ],
               "durationSource": "description",
               "persistent": true,
@@ -1049,8 +1050,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 1,
-        "reducibleHardSecondsWithMercs": 0.7,
+        "reducibleHardSeconds": 3.5,
+        "reducibleHardSecondsWithMercs": 2.45,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 2,
         "reducibleSoftSecondsWithMercs": 1.4,
@@ -1058,7 +1059,7 @@
         "knownDurationEffects": 2,
         "unknownDurationEffects": 0,
         "totalEffects": 2,
-        "hardSecondsSavedByMercs": 0.3,
+        "hardSecondsSavedByMercs": 1.05,
         "softSecondsSavedByMercs": 0.6
       }
     },
@@ -1721,10 +1722,13 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.75,
+              "durationMinSeconds": 1.25,
+              "durationValues": [
+                1.25,
+                1.75
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "The fourth stack against a target consumes them all to deal 26 : 196 (based on his level) magic damage and stun them for 1.25 : 1.75 (based on his level) seconds."
             }
@@ -1789,16 +1793,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.75,
+        "reducibleHardSecondsWithMercs": 1.22,
         "unreducibleHardSeconds": 0.6,
         "reducibleSoftSeconds": 6,
         "reducibleSoftSecondsWithMercs": 4.2,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 3,
-        "unknownDurationEffects": 1,
+        "knownDurationEffects": 4,
+        "unknownDurationEffects": 0,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.53,
         "softSecondsSavedByMercs": 1.8
       }
     },
@@ -3368,10 +3372,11 @@
               "type": "taunt",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 2,
-              "durationMinSeconds": 2,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 0.5,
               "durationValues": [
-                2
+                0.5,
+                1.5
               ],
               "durationSource": "description",
               "persistent": false,
@@ -3425,8 +3430,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 2,
-        "reducibleHardSecondsWithMercs": 1.4,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 1.5,
         "reducibleSoftSeconds": 0,
         "reducibleSoftSecondsWithMercs": 0,
@@ -3434,7 +3439,7 @@
         "knownDurationEffects": 3,
         "unknownDurationEffects": 1,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0.6,
+        "hardSecondsSavedByMercs": 0.45,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -4045,10 +4050,13 @@
               "type": "fear",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                1.5
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Upon arrival, he fears nearby enemies for 0.75 : 1.5 (based on distance traveled) seconds and slows them by 0% : 99% (based on distance from Hecarim)."
             },
@@ -4056,10 +4064,13 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                1.5
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Upon arrival, he fears nearby enemies for 0.75 : 1.5 (based on distance traveled) seconds and slows them by 0% : 99% (based on distance from Hecarim)."
             }
@@ -4067,17 +4078,17 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 0,
-        "reducibleSoftSecondsWithMercs": 0,
+        "reducibleSoftSeconds": 1.5,
+        "reducibleSoftSecondsWithMercs": 1.05,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 0,
-        "unknownDurationEffects": 2,
+        "knownDurationEffects": 2,
+        "unknownDurationEffects": 0,
         "totalEffects": 2,
-        "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0
+        "hardSecondsSavedByMercs": 0.45,
+        "softSecondsSavedByMercs": 0.45
       }
     },
     "Heimerdinger": {
@@ -5179,10 +5190,13 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.75,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5,
+                1.75
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Recast: K'Sante dashes in the direction he targeted at the time of cast, though not through terrain, dealing physical damage to enemies he passes through, carrying them alongside him, and stunning them for 0.5 : 1.75 (based on channel time) seconds."
             },
@@ -5247,16 +5261,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0.8,
-        "reducibleHardSecondsWithMercs": 0.8,
+        "reducibleHardSeconds": 2.55,
+        "reducibleHardSecondsWithMercs": 2.03,
         "unreducibleHardSeconds": 0.65,
         "reducibleSoftSeconds": 0.5,
         "reducibleSoftSecondsWithMercs": 0.5,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 4,
-        "unknownDurationEffects": 3,
+        "knownDurationEffects": 5,
+        "unknownDurationEffects": 2,
         "totalEffects": 7,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.52,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -5503,7 +5517,7 @@
         {
           "slot": "Q",
           "name": "Lay Waste",
-          "description": "Active: Karthus conjures a blast at the target location that detonates after 0.528 seconds − 0.759 seconds, granting sight of the area and dealing magic damage to all enemies within, doubled when only one target is struck.",
+          "description": "Active: Karthus conjures a blast at the target location that detonates after 0.528 seconds - 0.759 seconds, granting sight of the area and dealing magic damage to all enemies within, doubled when only one target is struck.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -7398,10 +7412,13 @@
               "type": "root",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 2.25,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                2.25
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Each bramble deals magic damage to enemies hit and roots them for 0.75 : 2.25 (based on distance traveled) seconds."
             }
@@ -7409,16 +7426,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 1.4,
-        "reducibleHardSecondsWithMercs": 0.98,
+        "reducibleHardSeconds": 3.65,
+        "reducibleHardSecondsWithMercs": 2.55,
         "unreducibleHardSeconds": 0.5,
         "reducibleSoftSeconds": 2.25,
         "reducibleSoftSecondsWithMercs": 1.65,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 4,
-        "unknownDurationEffects": 1,
+        "knownDurationEffects": 5,
+        "unknownDurationEffects": 0,
         "totalEffects": 5,
-        "hardSecondsSavedByMercs": 0.42,
+        "hardSecondsSavedByMercs": 1.1,
         "softSecondsSavedByMercs": 0.6
       }
     },
@@ -8548,25 +8565,22 @@
               "type": "airborne",
               "hard": true,
               "tenacityAffected": false,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
-              "persistent": false,
-              "sourceText": "The snowball explodes upon hitting an enemy champion, large pet, medium or large monster, or terrain, dealing magic damage to nearby enemies, increased by 0% : 400% (based on charge time), knocking them up for 0.5 : 0.75 (based on charge time) seconds and subsequently stunning them for 0 : 0.75 (based on charge time) seconds."
-            },
-            {
-              "type": "stun",
-              "hard": true,
-              "tenacityAffected": true,
-              "durationSeconds": 0.132,
-              "durationMinSeconds": 0.132,
+              "durationSeconds": 0.75,
+              "durationMinSeconds": 0.5,
               "durationValues": [
-                0.132
+                0.5,
+                0.75
               ],
               "durationSource": "description",
-              "persistent": true,
-              "sourceText": "If the snowball exploded while it was being steered, Willump becomes stunned for 0.132 seconds."
+              "persistent": false,
+              "sourceText": "The snowball explodes upon hitting an enemy champion, large pet, medium or large monster, or terrain, dealing magic damage to nearby enemies, increased by 0% : 400% (based on charge time), knocking them up for 0.5 : 0.75 (based on charge time) seconds and subsequently stunning them for 0 : 0.75 (based on charge time) seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.75,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -8594,10 +8608,13 @@
               "type": "root",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.62,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5,
+                1.62
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "After 3 seconds from the first cast, Snowbound enemies near Willump take magic damage and are rooted for 0.5 : 1.62 (based on level) seconds."
             }
@@ -8615,8 +8632,9 @@
               "hard": false,
               "tenacityAffected": true,
               "durationSeconds": 3,
-              "durationMinSeconds": 3,
+              "durationMinSeconds": 0,
               "durationValues": [
+                0,
                 3
               ],
               "durationSource": "description",
@@ -8627,16 +8645,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0.13,
-        "reducibleHardSecondsWithMercs": 0.13,
-        "unreducibleHardSeconds": 0,
+        "reducibleHardSeconds": 1.62,
+        "reducibleHardSecondsWithMercs": 1.13,
+        "unreducibleHardSeconds": 0.75,
         "reducibleSoftSeconds": 4,
         "reducibleSoftSecondsWithMercs": 2.8,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 3,
-        "unknownDurationEffects": 3,
-        "totalEffects": 6,
-        "hardSecondsSavedByMercs": 0,
+        "knownDurationEffects": 4,
+        "unknownDurationEffects": 1,
+        "totalEffects": 5,
+        "hardSecondsSavedByMercs": 0.49,
         "softSecondsSavedByMercs": 1.2
       }
     },
@@ -8657,10 +8675,13 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 3,
+              "durationMinSeconds": 1,
+              "durationValues": [
+                1,
+                3
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Active: Olaf throws an axe to the target location that deals physical damage to enemies it passes through and slows them for 1 : 3 (based on distance traveled) seconds."
             }
@@ -8679,14 +8700,14 @@
         "reducibleHardSeconds": 0,
         "reducibleHardSecondsWithMercs": 0,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 0,
-        "reducibleSoftSecondsWithMercs": 0,
+        "reducibleSoftSeconds": 3,
+        "reducibleSoftSecondsWithMercs": 2.1,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 0,
-        "unknownDurationEffects": 1,
+        "knownDurationEffects": 1,
+        "unknownDurationEffects": 0,
         "totalEffects": 1,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0
+        "softSecondsSavedByMercs": 0.9
       }
     },
     "Orianna": {
@@ -9288,10 +9309,13 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5,
+                1
+              ],
+              "durationSource": "description",
               "persistent": true,
               "sourceText": "The windblast creates a cascading shockwave across any River or Brush it passes through, as well as around the borders of Terrain it reaches, dealing physical damage to enemies hit, stunning them for 0.5 : 1 (based on proximity) seconds, and briefly granting sight of the area along its path."
             }
@@ -9299,16 +9323,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0.5,
-        "reducibleHardSecondsWithMercs": 0.5,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.2,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.5,
         "reducibleSoftSecondsWithMercs": 0.5,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 2,
-        "unknownDurationEffects": 2,
+        "knownDurationEffects": 3,
+        "unknownDurationEffects": 1,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.3,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -11222,12 +11246,22 @@
               "type": "airborne",
               "hard": true,
               "tenacityAffected": false,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
-              "persistent": true,
-              "sourceText": "Active: Sion prepares a strike in the target direction, charging for up to 2 seconds to increase Decimating Smash's range over an area, knock up duration, stun duration, and damage every 0.25 seconds, which has up to a maximum bonus for the base damage and up to a 200% bonus for the scaling damage."
+              "durationSeconds": 1,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5,
+                1
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "If Decimating Smash was charged for at least 1 second, Sion instead slams his axe down, dealing physical damage to enemies hit, knocking them up for 0.5 : 1 (based on channel time) seconds, and stunning them for 1.25 : 2.25 (based on channel time) seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             },
             {
               "type": "slow",
@@ -11241,17 +11275,6 @@
               "durationSource": "description",
               "persistent": false,
               "sourceText": "Recast: Sion flails his axe in the direction he targeted at the time of cast, dealing physical damage to enemies hit and slowing them by 50% for 0.25 seconds."
-            },
-            {
-              "type": "stun",
-              "hard": true,
-              "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
-              "persistent": false,
-              "sourceText": "If Decimating Smash was charged for at least 1 second, Sion instead slams his axe down, dealing physical damage to enemies hit, knocking them up for 0.5 : 1 (based on channel time) seconds, and stunning them for 1.25 : 2.25 (based on channel time) seconds."
             }
           ]
         },
@@ -11324,13 +11347,13 @@
       "summary": {
         "reducibleHardSeconds": 0.5,
         "reducibleHardSecondsWithMercs": 0.5,
-        "unreducibleHardSeconds": 0,
+        "unreducibleHardSeconds": 1,
         "reducibleSoftSeconds": 5.75,
         "reducibleSoftSecondsWithMercs": 4.1,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 4,
-        "unknownDurationEffects": 2,
-        "totalEffects": 6,
+        "knownDurationEffects": 5,
+        "unknownDurationEffects": 0,
+        "totalEffects": 5,
         "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 1.65
       }
@@ -13670,10 +13693,13 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.25,
+              "durationMinSeconds": 0.25,
+              "durationValues": [
+                0.25,
+                1.25
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "The mist deals magic damage to the first enemy hit and stuns them for 0.25 : 1.25 (based on channel time) seconds."
             }
@@ -13714,16 +13740,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.25,
+        "reducibleHardSecondsWithMercs": 0.88,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
         "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 1,
-        "unknownDurationEffects": 3,
+        "knownDurationEffects": 2,
+        "unknownDurationEffects": 2,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.37,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -14285,10 +14311,13 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 2.25,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                2.25
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Active: Xerath fires an orb of energy in the target direction that deals magic damage to the first enemy hit and stuns them for 0.75 : 2.25 (based on orb travel distance) seconds."
             }
@@ -14304,16 +14333,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 2.25,
+        "reducibleHardSecondsWithMercs": 1.58,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 2.5,
         "reducibleSoftSecondsWithMercs": 1.75,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 1,
-        "unknownDurationEffects": 2,
+        "knownDurationEffects": 2,
+        "unknownDurationEffects": 1,
         "totalEffects": 3,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.67,
         "softSecondsSavedByMercs": 0.75
       }
     },
