@@ -77,7 +77,15 @@ async function loadChampionRoster() {
     `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
   );
 
-  const champions = Object.values(payload.data || {}).map(champion => ({
+  const entries = Object.values(payload.data || {});
+
+  // Data Dragon can include special game-mode variants (currently `Jade_*`)
+  // alongside the standard Summoner's Rift champion records. Those variants
+  // reuse champion display names but do not have corresponding Lolalytics
+  // champion pages, so exclude them before building the scrape roster.
+  const supportedEntries = entries.filter(champion => !/^Jade_/i.test(champion.id));
+
+  const champions = supportedEntries.map(champion => ({
     id: champion.id,
     name: champion.name,
     slug: champion.id.toLowerCase() === "monkeyking" ? "wukong" : champion.id.toLowerCase(),
@@ -86,6 +94,8 @@ async function loadChampionRoster() {
 
   return {
     version,
+    dataDragonEntries: entries.length,
+    filteredVariants: entries.length - supportedEntries.length,
     champions: champions.sort((a, b) => a.name.localeCompare(b.name))
   };
 }
@@ -120,11 +130,17 @@ async function main() {
     throw new Error(`No champions matched CHAMPIONS=${[...ONLY_CHAMPIONS].join(",")}`);
   }
 
-  const champions = { ...(existing.champions || {}) };
+  const currentChampionIds = new Set(roster.champions.map(champion => champion.id));
+  const champions = Object.fromEntries(
+    Object.entries(existing.champions || {}).filter(([id]) => currentChampionIds.has(id))
+  );
   const failures = [];
   let updated = 0;
   let retained = 0;
 
+  if (roster.filteredVariants > 0) {
+    console.log(`Ignored ${roster.filteredVariants} non-standard Data Dragon variant record(s).`);
+  }
   console.log(`Fetching ${requested.length} champion page(s) with a ${REQUEST_DELAY_MS}ms delay.`);
 
   for (const [index, champion] of requested.entries()) {
@@ -183,6 +199,8 @@ async function main() {
       patch: PATCH_WINDOW,
       region: "global",
       dataDragonVersion: roster.version,
+      dataDragonEntries: roster.dataDragonEntries,
+      filteredVariants: roster.filteredVariants,
       championsRequested: requested.length,
       championsUpdated: updated,
       championsRetained: retained,
