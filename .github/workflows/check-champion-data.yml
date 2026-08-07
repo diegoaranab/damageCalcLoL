@@ -9,6 +9,7 @@ on:
     paths:
       - "scripts/build-cc-data.mjs"
       - "scripts/check-patch.mjs"
+      - "scripts/enable-cc-ui.mjs"
       - "scripts/lib/cc-parser.mjs"
       - "scripts/test-cc-parser.mjs"
       - "site/data/champion-cc.json"
@@ -61,18 +62,22 @@ jobs:
           FORCE_CC_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force && '1' || '0' }}
         run: npm run cc:check
 
+      - name: Enable crowd-control UI
+        if: steps.patch.outputs.changed == 'true'
+        run: npm run ui:enable
+
       - name: Build crowd-control data
         if: steps.patch.outputs.changed == 'true'
         run: npm run cc:build
 
-      - name: Commit crowd-control data
+      - name: Commit crowd-control data and UI bootstrap
         if: steps.patch.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data/champion-cc.json
+          git add site/index.html site/data/champion-cc.json
           if git diff --cached --quiet; then
-            echo "No crowd-control data changes to commit."
+            echo "No crowd-control data or UI bootstrap changes to commit."
           else
             git commit -m "chore(data): refresh champion crowd control"
             git push
