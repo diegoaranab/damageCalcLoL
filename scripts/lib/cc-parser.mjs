@@ -22,8 +22,8 @@ const HARD_CC = new Set([
 
 // These expressions intentionally prefer verbs/effect wording over bare nouns. That
 // avoids treating references such as "champions hit by Charm" as if the current
-// ability itself applied a charm. Bare "fear" is accepted only when it is clearly
-// used as a verb against a target, as in Vex's passive: "fear enemies hit".
+// ability itself applied a charm. Bare "fear" and "stun" are accepted only when
+// they are clearly used as verbs against a target.
 const EFFECT_PATTERNS = [
   { type: "suppression", re: /\b(?:suppress(?:es|ed|ing)?|suppression)\b/gi },
   { type: "stasis", re: /\b(?:stasis|put(?:s|ting)?\s+[^.!?;]{0,30}\s+into stasis)\b/gi },
@@ -42,7 +42,10 @@ const EFFECT_PATTERNS = [
   },
   { type: "flee", re: /\b(?:flee|flees|fleeing)\b/gi },
   { type: "taunt", re: /\b(?:taunt(?:s|ed|ing)|to taunt)\b/gi },
-  { type: "stun", re: /\b(?:stun(?:s|ned|ning)|to stun)\b/gi },
+  {
+    type: "stun",
+    re: /\b(?:stun(?:s|ned|ning)|to stun|stun(?=\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b)|stun(?=\s+and\s+[^.!?;]{0,35}\b(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b))\b/gi
+  },
   { type: "root", re: /\b(?:root(?:s|ed|ing)|to root|snare(?:s|d|ing)|to snare)\b/gi },
   { type: "silence", re: /\b(?:silenc(?:e|es|ed|ing)|to silence)\b/gi },
   { type: "ground", re: /\b(?:ground(?:s|ed|ing)|to ground)\b/gi },
@@ -89,37 +92,45 @@ function parseNumberList(raw) {
 }
 
 export function extractDuration(sentence, matchIndex = 0) {
-  const windows = [
-    sentence.slice(Math.max(0, matchIndex - 80), Math.min(sentence.length, matchIndex + 150)),
-    sentence
-  ];
-
   // League Wiki frequently inserts metadata such as "(based on level)" between a
   // duration value list and "seconds". Accept those annotations, but deliberately
   // reject scaling expressions such as "(+ 0.5 per 100 AP)" rather than pretending
   // their base value is the complete duration.
   const qualifier = String.raw`(?:\s*\(based on [^)]{1,65}\))?`;
   const numberList = String.raw`(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})`;
-  const patterns = [
-    new RegExp(String.raw`(?:for|lasting|lasts|duration(?: of)?|over)\s+${numberList}${qualifier}\s*(?:seconds?|secs?|s)\b`, "i"),
-    new RegExp(String.raw`${numberList}${qualifier}\s*(?:seconds?|secs?|s)\s+(?:stun|root|slow|silence|fear|taunt|charm|sleep|suppression|airborne)`, "i")
+  const patternSources = [
+    String.raw`(?:for|lasting|lasts|duration(?: of)?|over)\s+${numberList}${qualifier}\s*(?:seconds?|secs?|s)\b`,
+    String.raw`${numberList}${qualifier}\s*(?:seconds?|secs?|s)\s+(?:stun|root|slow|silence|fear|taunt|charm|sleep|suppression|airborne)`
   ];
 
-  for (const windowText of windows) {
-    for (const pattern of patterns) {
-      const match = windowText.match(pattern);
-      if (!match) continue;
+  const candidates = [];
+  for (const source of patternSources) {
+    const pattern = new RegExp(source, "gi");
+    let match;
+    while ((match = pattern.exec(sentence)) !== null) {
       const values = parseNumberList(match[1]);
       if (!values) continue;
-      return {
+      const start = match.index;
+      const end = match.index + match[0].length;
+      const distance = matchIndex < start
+        ? start - matchIndex
+        : matchIndex > end
+          ? matchIndex - end
+          : 0;
+      candidates.push({
         min: Math.min(...values),
         max: Math.max(...values),
-        values
-      };
+        values,
+        distance,
+        start
+      });
     }
   }
 
-  return null;
+  if (!candidates.length) return null;
+  candidates.sort((a, b) => a.distance - b.distance || a.start - b.start);
+  const { min, max, values } = candidates[0];
+  return { min, max, values };
 }
 
 export function reducedDuration(seconds, tenacity = MERCS_TENACITY) {
@@ -144,6 +155,65 @@ function effectFamily(type) {
   // this model. An ability such as Vex P can describe both, but only one happens per
   // proc, so retaining both would double-count the same hard-CC event.
   return type === "flee" ? "fear" : type;
+}
+
+function postTenacityDuration(effect) {
+  if (!Number.isFinite(effect.durationSeconds)) return null;
+  return effect.tenacityAffected
+    ? reducedDuration(effect.durationSeconds)
+    : effect.durationSeconds;
+}
+
+function concurrentEffectSnapshot(effect) {
+  return {
+    type: effect.type,
+    durationSeconds: effect.durationSeconds,
+    tenacityAffected: effect.tenacityAffected
+  };
+}
+
+function collapseAirborneOverlap(effects) {
+  const kept = new Set(effects);
+  const bySentence = new Map();
+
+  for (const effect of effects) {
+    if (!effect.hard || !effect.sourceText) continue;
+    if (!bySentence.has(effect.sourceText)) bySentence.set(effect.sourceText, []);
+    bySentence.get(effect.sourceText).push(effect);
+  }
+
+  for (const group of bySentence.values()) {
+    const airborne = group.find(effect => effect.type === "airborne");
+    const timedReducible = group.filter(effect =>
+      ["stun", "root"].includes(effect.type) &&
+      Number.isFinite(effect.durationSeconds)
+    );
+    if (!airborne || !Number.isFinite(airborne.durationSeconds) || !timedReducible.length) continue;
+
+    for (const reducible of timedReducible) {
+      const airborneAfter = postTenacityDuration(airborne);
+      const reducibleAfter = postTenacityDuration(reducible);
+      if (!Number.isFinite(airborneAfter) || !Number.isFinite(reducibleAfter)) continue;
+
+      // These effects describe the same lockout window. Keep whichever still lasts
+      // longer after Mercury's Treads rather than summing simultaneous CC twice.
+      // Example: Thresh Q is a 1.5s stun with a 0.4s airborne overlap, so the stun
+      // remains the effective window after 30% Tenacity (1.05s > 0.4s). Vel'Koz E
+      // has equal 0.75s stun/airborne, so the unaffected airborne component dominates.
+      const reducibleDominates = reducibleAfter > airborneAfter;
+      const winner = reducibleDominates ? reducible : airborne;
+      const loser = reducibleDominates ? airborne : reducible;
+      if (!kept.has(winner) || !kept.has(loser)) continue;
+
+      winner.concurrentEffects = [
+        ...(winner.concurrentEffects || []),
+        concurrentEffectSnapshot(loser)
+      ];
+      kept.delete(loser);
+    }
+  }
+
+  return effects.filter(effect => kept.has(effect));
 }
 
 export function parseCrowdControlText(rawText) {
@@ -176,26 +246,18 @@ export function parseCrowdControlText(rawText) {
     }
   }
 
-  const cleaned = effects.filter((effect, index, all) => {
-    if (!["stun", "root"].includes(effect.type)) return true;
-    return !all.some(other =>
-      other.type === "airborne" &&
-      other.sourceText === effect.sourceText &&
-      other !== effect
-    );
-  });
-
   // One ability should expose one entry per semantic CC family in the final model.
   // Prefer the occurrence with a known duration over a duplicate prose mention.
   const byType = new Map();
-  for (const effect of cleaned) {
+  for (const effect of effects) {
     const key = effectFamily(effect.type);
     const current = byType.get(key);
     if (!current || (!Number.isFinite(current.durationSeconds) && Number.isFinite(effect.durationSeconds))) {
       byType.set(key, effect);
     }
   }
-  return [...byType.values()];
+
+  return collapseAirborneOverlap([...byType.values()]);
 }
 
 export function isHardCrowdControl(type) {
