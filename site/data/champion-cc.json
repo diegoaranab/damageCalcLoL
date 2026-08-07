@@ -1,9 +1,9 @@
 {
   "meta": {
-    "generatedAt": "2026-08-07T07:03:47.119Z",
+    "generatedAt": "2026-08-07T07:55:10.862Z",
     "patch": "16.15.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
-    "parserVersion": 3,
+    "parserVersion": 4,
     "mercurysTreadsTenacity": 0.3,
     "tenacityMinimumDurationSeconds": 0.5,
     "tenacityUnaffected": [
@@ -17,9 +17,9 @@
     "champions": 173,
     "wikiChampions": 173,
     "fallbackChampions": 0,
-    "parsedEffects": 450,
-    "knownDurationEffects": 341,
-    "timedCoveragePercent": 75.8,
+    "parsedEffects": 459,
+    "knownDurationEffects": 346,
+    "timedCoveragePercent": 75.4,
     "failures": []
   },
   "champions": {
@@ -367,7 +367,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Alistar smashes the ground beneath him, dealing magic damage to nearby enemies and stunning and knocking them up simultaneously for 1 second."
+              "sourceText": "Active: Alistar smashes the ground beneath him, dealing magic damage to nearby enemies and stunning and knocking them up simultaneously for 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -389,7 +396,14 @@
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "If they are within 400 units upon arrival, he deals them magic damage and knocks them back 700 units over 0.5 seconds while also stunning them for 0.75 seconds."
+              "sourceText": "If they are within 400 units upon arrival, he deals them magic damage and knocks them back 700 units over 0.5 seconds while also stunning them for 0.75 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.5,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -399,20 +413,34 @@
           "description": "Active: Alistar tramples the ground around him every 0.5 seconds over 5 seconds, becoming ghosted and dealing magic damage to nearby enemies. Each time this damages at least one enemy champion, he generates a stack of Trample that lasts for the remaining duration, stacking up to 5 times.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
-          "effects": []
+          "effects": [
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
+              "durationValues": [
+                1
+              ],
+              "durationSource": "description",
+              "persistent": true,
+              "sourceText": "At 5 stacks, Alistar's next basic attack on-hit against a champion within 6 seconds ends Trample's effects to deal 20 : 275 (based on level) bonus magic damage and stun the target for 1 second."
+            }
+          ]
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1,
+        "reducibleHardSecondsWithMercs": 0.7,
         "unreducibleHardSeconds": 1.5,
         "reducibleSoftSeconds": 0,
         "reducibleSoftSecondsWithMercs": 0,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 2,
+        "knownDurationEffects": 3,
         "unknownDurationEffects": 0,
-        "totalEffects": 2,
-        "hardSecondsSavedByMercs": 0,
+        "totalEffects": 3,
+        "hardSecondsSavedByMercs": 0.3,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -512,7 +540,7 @@
       ],
       "summary": {
         "reducibleHardSeconds": 0.4,
-        "reducibleHardSecondsWithMercs": 0.5,
+        "reducibleHardSecondsWithMercs": 0.4,
         "unreducibleHardSeconds": 0.75,
         "reducibleSoftSeconds": 0,
         "reducibleSoftSecondsWithMercs": 0,
@@ -520,7 +548,7 @@
         "knownDurationEffects": 2,
         "unknownDurationEffects": 1,
         "totalEffects": 3,
-        "hardSecondsSavedByMercs": -0.1,
+        "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -1102,10 +1130,10 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 3,
-              "durationMinSeconds": 3,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
               "durationValues": [
-                3
+                1
               ],
               "durationSource": "description",
               "persistent": true,
@@ -1118,14 +1146,14 @@
         "reducibleHardSeconds": 1,
         "reducibleHardSecondsWithMercs": 0.7,
         "unreducibleHardSeconds": 1,
-        "reducibleSoftSeconds": 3,
-        "reducibleSoftSecondsWithMercs": 2.1,
+        "reducibleSoftSeconds": 1,
+        "reducibleSoftSecondsWithMercs": 0.7,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 3,
         "unknownDurationEffects": 0,
         "totalEffects": 3,
         "hardSecondsSavedByMercs": 0.3,
-        "softSecondsSavedByMercs": 0.9
+        "softSecondsSavedByMercs": 0.3
       }
     },
     "Aurora": {
@@ -1517,7 +1545,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Blitzcrank fires their right hand in the target direction that catches the first enemy hit, dealing them magic damage, stunning them for 0.65 seconds, and pulling them towards Blitzcrank, during which they are revealed."
+              "sourceText": "Active: Blitzcrank fires their right hand in the target direction that catches the first enemy hit, dealing them magic damage, stunning them for 0.65 seconds, and pulling them towards Blitzcrank, during which they are revealed.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.65,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -1660,13 +1695,13 @@
         "reducibleHardSecondsWithMercs": 1.22,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 2,
         "unknownDurationEffects": 0,
         "totalEffects": 2,
         "hardSecondsSavedByMercs": 0.53,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Braum": {
@@ -1681,7 +1716,19 @@
           "description": "Innate: Braum's basic attacks and Winter's Bite each apply a stack of Concussive Blows to their target for 4 seconds, refreshing on subsequent applications and stacking up to 4 times. Once the first stack has been applied, any allied champion's basic attack applies an additional stack to the target on-hit.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
-          "effects": []
+          "effects": [
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": null,
+              "durationMinSeconds": null,
+              "durationValues": null,
+              "durationSource": null,
+              "persistent": false,
+              "sourceText": "The fourth stack against a target consumes them all to deal 26 : 196 (based on his level) magic damage and stun them for 1.25 : 1.75 (based on his level) seconds."
+            }
+          ]
         },
         {
           "slot": "Q",
@@ -1749,8 +1796,8 @@
         "reducibleSoftSecondsWithMercs": 4.2,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 3,
-        "unknownDurationEffects": 0,
-        "totalEffects": 3,
+        "unknownDurationEffects": 1,
+        "totalEffects": 4,
         "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 1.8
       }
@@ -1838,7 +1885,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "If they collide with terrain, they will rebound to take bonus magic damage and become knocked up for 0.5 seconds and stunned for 1.5 seconds."
+              "sourceText": "If they collide with terrain, they will rebound to take bonus magic damage and become knocked up for 0.5 seconds and stunned for 1.5 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.5,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -2030,7 +2084,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Camille stops prematurely upon colliding with an enemy champion, knocking back all nearby enemy champions, though not through terrain, as well as stunning them for 0.75 seconds."
+              "sourceText": "Camille stops prematurely upon colliding with an enemy champion, knocking back all nearby enemy champions, though not through terrain, as well as stunning them for 0.75 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.75,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -2676,6 +2737,19 @@
               "durationSource": "description",
               "persistent": true,
               "sourceText": "After travelling over 1.25 seconds, the device expands into a chronosphere that lasts for 1.5 seconds and which slows enemies within by 40%."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 2,
+              "durationMinSeconds": 2,
+              "durationValues": [
+                2
+              ],
+              "durationSource": "description",
+              "persistent": true,
+              "sourceText": "If Ekko enters the sphere before it expires, it detonates to grant him a shield for 2 seconds and stun enemies within for 2.25 seconds."
             }
           ]
         },
@@ -2703,16 +2777,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 2,
+        "reducibleHardSecondsWithMercs": 1.4,
         "unreducibleHardSeconds": 0.5,
         "reducibleSoftSeconds": 3.25,
         "reducibleSoftSecondsWithMercs": 2.27,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 3,
+        "knownDurationEffects": 4,
         "unknownDurationEffects": 0,
-        "totalEffects": 3,
-        "hardSecondsSavedByMercs": 0,
+        "totalEffects": 4,
+        "hardSecondsSavedByMercs": 0.6,
         "softSecondsSavedByMercs": 0.98
       }
     },
@@ -3739,7 +3813,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Gragas charges in the target direction and stops upon colliding with an enemy, dealing magic damage to all nearby enemies, knocking them back, though not through terrain, and stunning them for 1 second."
+              "sourceText": "Active: Gragas charges in the target direction and stops upon colliding with an enemy, dealing magic damage to all nearby enemies, knocking them back, though not through terrain, and stunning them for 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -3754,10 +3835,10 @@
               "type": "airborne",
               "hard": true,
               "tenacityAffected": false,
-              "durationSeconds": 1,
-              "durationMinSeconds": 1,
+              "durationSeconds": 0.5,
+              "durationMinSeconds": 0.5,
               "durationValues": [
-                1
+                0.5
               ],
               "durationSource": "description",
               "persistent": true,
@@ -3769,7 +3850,7 @@
       "summary": {
         "reducibleHardSeconds": 0,
         "reducibleHardSecondsWithMercs": 0,
-        "unreducibleHardSeconds": 2,
+        "unreducibleHardSeconds": 1.5,
         "reducibleSoftSeconds": 2,
         "reducibleSoftSecondsWithMercs": 1.4,
         "unreducibleSoftSeconds": 0,
@@ -4299,13 +4380,13 @@
         "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 4,
-        "reducibleSoftSecondsWithMercs": 3.13,
+        "reducibleSoftSecondsWithMercs": 2.88,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
         "unknownDurationEffects": 1,
         "totalEffects": 5,
         "hardSecondsSavedByMercs": 0.45,
-        "softSecondsSavedByMercs": 0.87
+        "softSecondsSavedByMercs": 1.12
       }
     },
     "Illaoi": {
@@ -4836,6 +4917,17 @@
               "durationSource": null,
               "persistent": false,
               "sourceText": "Active: Jayce roots the target enemy over the cast time, then swings his hammer at them to deal magic damage, capped against monsters, and knock them back 600 units."
+            },
+            {
+              "type": "root",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": null,
+              "durationMinSeconds": null,
+              "durationValues": null,
+              "durationSource": null,
+              "persistent": false,
+              "sourceText": "Active: Jayce roots the target enemy over the cast time, then swings his hammer at them to deal magic damage, capped against monsters, and knock them back 600 units."
             }
           ]
         }
@@ -4848,8 +4940,8 @@
         "reducibleSoftSecondsWithMercs": 0,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 0,
-        "unknownDurationEffects": 1,
-        "totalEffects": 1,
+        "unknownDurationEffects": 2,
+        "totalEffects": 2,
         "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0
       }
@@ -5065,7 +5157,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Empowered Active: K'Sante fires a shockwave in the target direction that applies the same effects to enemies hit, but also pulls them towards him over 0.65 seconds and stuns them for 0.8 seconds."
+              "sourceText": "Empowered Active: K'Sante fires a shockwave in the target direction that applies the same effects to enemies hit, but also pulls them towards him over 0.65 seconds and stuns them for 0.8 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.65,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -5111,14 +5210,12 @@
               "type": "airborne",
               "hard": true,
               "tenacityAffected": false,
-              "durationSeconds": 0.264,
-              "durationMinSeconds": 0.264,
-              "durationValues": [
-                0.264
-              ],
-              "durationSource": "description",
-              "persistent": true,
-              "sourceText": "At the end of the displacement, they remain airborne for 0.264 seconds, after which they are stunned for 0.5 seconds."
+              "durationSeconds": null,
+              "durationMinSeconds": null,
+              "durationValues": null,
+              "durationSource": null,
+              "persistent": false,
+              "sourceText": "He then shatters his ntofos, pulling the target to a location that is 300 units in the cast direction from their location at the time of cast, during which they are revealed, and blinking 175 units behind that location."
             },
             {
               "type": "stun",
@@ -5151,15 +5248,15 @@
       ],
       "summary": {
         "reducibleHardSeconds": 0.8,
-        "reducibleHardSecondsWithMercs": 1,
-        "unreducibleHardSeconds": 0.91,
+        "reducibleHardSecondsWithMercs": 0.8,
+        "unreducibleHardSeconds": 0.65,
         "reducibleSoftSeconds": 0.5,
         "reducibleSoftSecondsWithMercs": 0.5,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 5,
-        "unknownDurationEffects": 2,
+        "knownDurationEffects": 4,
+        "unknownDurationEffects": 3,
         "totalEffects": 7,
-        "hardSecondsSavedByMercs": -0.2,
+        "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -6298,7 +6395,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Lee Sin roots the target enemy champion over the cast time, then roundhouse kicks them to deal physical damage and knock them back up to 800 units over 0.8 seconds, rendering them airborne for 1 second."
+              "sourceText": "Active: Lee Sin roots the target enemy champion over the cast time, then roundhouse kicks them to deal physical damage and knock them back up to 800 units over 0.8 seconds, rendering them airborne for 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "root",
+                  "durationSeconds": 0.8,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         }
@@ -6337,7 +6441,21 @@
           "description": "Active: Leona illuminates her shield, empowering her next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range, deal bonus magic damage and stun the target for 1 second.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
-          "effects": []
+          "effects": [
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
+              "durationValues": [
+                1
+              ],
+              "durationSource": "description",
+              "persistent": true,
+              "sourceText": "Active: Leona illuminates her shield, empowering her next basic attack within 6 seconds to have an uncancellable windup, gain 50 bonus range, deal bonus magic damage and stun the target for 1 second."
+            }
+          ]
         },
         {
           "slot": "W",
@@ -6406,16 +6524,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 2.25,
-        "reducibleHardSecondsWithMercs": 1.73,
+        "reducibleHardSeconds": 3.25,
+        "reducibleHardSecondsWithMercs": 2.42,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 1.75,
         "reducibleSoftSecondsWithMercs": 1.22,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 3,
+        "knownDurationEffects": 4,
         "unknownDurationEffects": 0,
-        "totalEffects": 3,
-        "hardSecondsSavedByMercs": 0.52,
+        "totalEffects": 4,
+        "hardSecondsSavedByMercs": 0.83,
         "softSecondsSavedByMercs": 0.53
       }
     },
@@ -6641,10 +6759,10 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 3,
-              "durationMinSeconds": 3,
+              "durationSeconds": 0.5,
+              "durationMinSeconds": 0.5,
               "durationValues": [
-                3
+                0.5
               ],
               "durationSource": "description",
               "persistent": true,
@@ -6657,14 +6775,14 @@
         "reducibleHardSeconds": 3.15,
         "reducibleHardSecondsWithMercs": 2.2,
         "unreducibleHardSeconds": 2.5,
-        "reducibleSoftSeconds": 4.5,
-        "reducibleSoftSecondsWithMercs": 3.15,
+        "reducibleSoftSeconds": 2,
+        "reducibleSoftSecondsWithMercs": 1.55,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 5,
         "unknownDurationEffects": 0,
         "totalEffects": 5,
         "hardSecondsSavedByMercs": 0.95,
-        "softSecondsSavedByMercs": 1.35
+        "softSecondsSavedByMercs": 0.45
       }
     },
     "Locke": {
@@ -6913,13 +7031,13 @@
         "reducibleHardSecondsWithMercs": 1.4,
         "unreducibleHardSeconds": 1,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 3,
         "unknownDurationEffects": 1,
         "totalEffects": 4,
         "hardSecondsSavedByMercs": 0.6,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Lux": {
@@ -7210,7 +7328,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Enemies near Maokai are also stunned for 0.5 seconds and knocked back up to 300 units based on their proximity to him."
+              "sourceText": "Enemies near Maokai are also stunned for 0.5 seconds and knocked back up to 300 units based on their proximity to him.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.5,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -7288,13 +7413,13 @@
         "reducibleHardSecondsWithMercs": 0.98,
         "unreducibleHardSeconds": 0.5,
         "reducibleSoftSeconds": 2.25,
-        "reducibleSoftSecondsWithMercs": 1.9,
+        "reducibleSoftSecondsWithMercs": 1.65,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
         "unknownDurationEffects": 1,
         "totalEffects": 5,
         "hardSecondsSavedByMercs": 0.42,
-        "softSecondsSavedByMercs": 0.35
+        "softSecondsSavedByMercs": 0.6
       }
     },
     "MasterYi": {
@@ -7413,13 +7538,13 @@
         "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 2,
         "unknownDurationEffects": 0,
         "totalEffects": 2,
         "hardSecondsSavedByMercs": 0.45,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Milio": {
@@ -7454,7 +7579,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: After a 0.25-second delay, Milio kicks a fireball in the target direction that grants sight of its path and knocks back and stuns the first enemy it hits over 1 second."
+              "sourceText": "Active: After a 0.25-second delay, Milio kicks a fireball in the target direction that grants sight of its path and knocks back and stuns the first enemy it hits over 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             },
             {
               "type": "slow",
@@ -7782,13 +7914,13 @@
         "reducibleHardSecondsWithMercs": 0,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 1,
         "unknownDurationEffects": 0,
         "totalEffects": 1,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Nami": {
@@ -7952,14 +8084,21 @@
               "type": "airborne",
               "hard": true,
               "tenacityAffected": false,
-              "durationSeconds": 1.15,
-              "durationMinSeconds": 1.15,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
               "durationValues": [
-                1.15
+                1
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "If the anchor hits an enemy, it deals magic damage, reveals them for 1.15 seconds, stuns them for 1 second, and drags them toward Nautilus while he also dashes toward them, both over 0.9 seconds."
+              "sourceText": "If the anchor hits an enemy, it deals magic damage, reveals them for 1.15 seconds, stuns them for 1 second, and drags them toward Nautilus while he also dashes toward them, both over 0.9 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1.15,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -8011,7 +8150,25 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Enemies hit by the eruptions are dealt magic damage, knocked up for 1 second, and stunned for a duration."
+              "sourceText": "Enemies hit by the eruptions are dealt magic damage, knocked up for 1 second, and stunned for a duration.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": null,
+              "durationMinSeconds": null,
+              "durationValues": null,
+              "durationSource": null,
+              "persistent": false,
+              "sourceText": "The primary target takes increased damage, is stunned for the same duration, and knocked up for a modified duration."
             }
           ]
         }
@@ -8019,13 +8176,13 @@
       "summary": {
         "reducibleHardSeconds": 0,
         "reducibleHardSecondsWithMercs": 0,
-        "unreducibleHardSeconds": 2.15,
+        "unreducibleHardSeconds": 2,
         "reducibleSoftSeconds": 1.5,
         "reducibleSoftSecondsWithMercs": 1.05,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 3,
-        "unknownDurationEffects": 0,
-        "totalEffects": 3,
+        "unknownDurationEffects": 1,
+        "totalEffects": 4,
         "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0.45
       }
@@ -8471,7 +8628,7 @@
       ],
       "summary": {
         "reducibleHardSeconds": 0.13,
-        "reducibleHardSecondsWithMercs": 0.5,
+        "reducibleHardSecondsWithMercs": 0.13,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 4,
         "reducibleSoftSecondsWithMercs": 2.8,
@@ -8479,7 +8636,7 @@
         "knownDurationEffects": 3,
         "unknownDurationEffects": 3,
         "totalEffects": 6,
-        "hardSecondsSavedByMercs": -0.37,
+        "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 1.2
       }
     },
@@ -8602,7 +8759,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Orianna commands The Ball to unleash a shockwave that deals magic damage to nearby enemies, stuns them for 0.75 seconds, and pulls them over 325 units, though not through terrain."
+              "sourceText": "Active: Orianna commands The Ball to unleash a shockwave that deals magic damage to nearby enemies, stuns them for 0.75 seconds, and pulls them over 325 units, though not through terrain.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.75,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         }
@@ -8688,7 +8852,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "If Ornn collides with terrain during the charge, he creates a shockwave that knocks up and stuns nearby enemies for 1.25 seconds and deals the same damage if they were not already hit by the charge."
+              "sourceText": "If Ornn collides with terrain during the charge, he creates a shockwave that knocks up and stuns nearby enemies for 1.25 seconds and deals the same damage if they were not already hit by the charge.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1.25,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -8723,7 +8894,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "The elemental deals the same damage to enemies it passes through and knocks them up and stuns them for 1 second, reduced to 0.5 seconds after the first enemy champion hit."
+              "sourceText": "The elemental deals the same damage to enemies it passes through and knocks them up and stuns them for 1 second, reduced to 0.5 seconds after the first enemy champion hit.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         }
@@ -9381,10 +9559,10 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 0.4,
-              "durationMinSeconds": 0.4,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
               "durationValues": [
-                0.4
+                1
               ],
               "durationSource": "description",
               "persistent": false,
@@ -9464,16 +9642,16 @@
       ],
       "summary": {
         "reducibleHardSeconds": 2.4,
-        "reducibleHardSecondsWithMercs": 1.9,
+        "reducibleHardSecondsWithMercs": 1.8,
         "unreducibleHardSeconds": 0.75,
-        "reducibleSoftSeconds": 1.9,
-        "reducibleSoftSecondsWithMercs": 1.55,
+        "reducibleSoftSeconds": 2.5,
+        "reducibleSoftSecondsWithMercs": 1.75,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 5,
         "unknownDurationEffects": 1,
         "totalEffects": 6,
-        "hardSecondsSavedByMercs": 0.5,
-        "softSecondsSavedByMercs": 0.35
+        "hardSecondsSavedByMercs": 0.6,
+        "softSecondsSavedByMercs": 0.75
       }
     },
     "RekSai": {
@@ -9627,7 +9805,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Upon arrival, she deals magic damage to nearby enemies, stuns them for 0.8 seconds, and knocks them up for 0.4 seconds."
+              "sourceText": "Upon arrival, she deals magic damage to nearby enemies, stuns them for 0.8 seconds, and knocks them up for 0.4 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.8,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -9649,7 +9834,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Upon arrival or collision of the charge, her basic attack deals bonus magic damage, stuns the target for 0.6 seconds, and flings them 150 units over herself, though not through terrain, over 0.4 seconds."
+              "sourceText": "Upon arrival or collision of the charge, her basic attack deals bonus magic damage, stuns the target for 0.6 seconds, and flings them 150 units over herself, though not through terrain, over 0.4 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.6,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -10331,13 +10523,13 @@
         "reducibleHardSecondsWithMercs": 1.4,
         "unreducibleHardSeconds": 0.5,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
         "unknownDurationEffects": 3,
         "totalEffects": 7,
         "hardSecondsSavedByMercs": 0.6,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Senna": {
@@ -11049,6 +11241,17 @@
               "durationSource": "description",
               "persistent": false,
               "sourceText": "Recast: Sion flails his axe in the direction he targeted at the time of cast, dealing physical damage to enemies hit and slowing them by 50% for 0.25 seconds."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": null,
+              "durationMinSeconds": null,
+              "durationValues": null,
+              "durationSource": null,
+              "persistent": false,
+              "sourceText": "If Decimating Smash was charged for at least 1 second, Sion instead slams his axe down, dealing physical damage to enemies hit, knocking them up for 0.5 : 1 (based on channel time) seconds, and stunning them for 1.25 : 2.25 (based on channel time) seconds."
             }
           ]
         },
@@ -11123,13 +11326,13 @@
         "reducibleHardSecondsWithMercs": 0.5,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 5.75,
-        "reducibleSoftSecondsWithMercs": 4.35,
+        "reducibleSoftSecondsWithMercs": 4.1,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
-        "unknownDurationEffects": 1,
-        "totalEffects": 5,
+        "unknownDurationEffects": 2,
+        "totalEffects": 6,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 1.4
+        "softSecondsSavedByMercs": 1.65
       }
     },
     "Sivir": {
@@ -11662,6 +11865,19 @@
               "durationSource": "description",
               "persistent": false,
               "sourceText": "Upon hitting the target, Sylas dashes to their location and knocks them up for 0.5 seconds upon arrival."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 0.5,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "Active: Sylas whips out his chains in the target direction that deal magic damage to the first enemy hit and reveal and stun them for 0.5 seconds."
             }
           ]
         },
@@ -11675,15 +11891,15 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 0.5,
+        "reducibleHardSecondsWithMercs": 0.5,
         "unreducibleHardSeconds": 0.5,
         "reducibleSoftSeconds": 1.5,
         "reducibleSoftSecondsWithMercs": 1.05,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 2,
+        "knownDurationEffects": 3,
         "unknownDurationEffects": 0,
-        "totalEffects": 2,
+        "totalEffects": 3,
         "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0.45
       }
@@ -12220,9 +12436,9 @@
           "source": "league-wiki-meraki",
           "effects": [
             {
-              "type": "airborne",
+              "type": "stun",
               "hard": true,
-              "tenacityAffected": false,
+              "tenacityAffected": true,
               "durationSeconds": 1.5,
               "durationMinSeconds": 1.5,
               "durationValues": [
@@ -12230,31 +12446,27 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "The scythe catches the first enemy hit to deal magic damage, stun and reveal them for 1.5 seconds, and render them airborne for 0.4 seconds, as well as reduce Death Sentence's current cooldown by 2 seconds."
+              "sourceText": "The scythe catches the first enemy hit to deal magic damage, stun and reveal them for 1.5 seconds, and render them airborne for 0.4 seconds, as well as reduce Death Sentence's current cooldown by 2 seconds.",
+              "concurrentEffects": [
+                {
+                  "type": "airborne",
+                  "durationSeconds": 0.4,
+                  "tenacityAffected": false
+                }
+              ]
             },
             {
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 1.5,
-              "durationMinSeconds": 1.5,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
               "durationValues": [
-                1.5
+                1
               ],
               "durationSource": "description",
               "persistent": false,
               "sourceText": "Thresh will also mark the target Shackled for 1.5 seconds, during which he is unable to declare basic attacks, and is slowed by 20% for 1 second."
-            },
-            {
-              "type": "stun",
-              "hard": true,
-              "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
-              "persistent": true,
-              "sourceText": "While the target is stunned, Thresh tugs his hook towards him twice, once after a 0.1-second delay and again 0.6 seconds after that."
             }
           ]
         },
@@ -12304,17 +12516,17 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
-        "unreducibleHardSeconds": 1.5,
-        "reducibleSoftSeconds": 4.5,
-        "reducibleSoftSecondsWithMercs": 3.15,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.05,
+        "unreducibleHardSeconds": 0,
+        "reducibleSoftSeconds": 4,
+        "reducibleSoftSecondsWithMercs": 2.8,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
-        "unknownDurationEffects": 1,
-        "totalEffects": 5,
-        "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 1.35
+        "unknownDurationEffects": 0,
+        "totalEffects": 4,
+        "hardSecondsSavedByMercs": 0.45,
+        "softSecondsSavedByMercs": 1.2
       }
     },
     "Tristana": {
@@ -12382,21 +12594,36 @@
               "durationSource": null,
               "persistent": false,
               "sourceText": "They and surrounding enemies are also knocked back and stunned for a duration, during which all targets are revealed."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 0.7,
+              "durationMinSeconds": 0.4,
+              "durationValues": [
+                0.4,
+                0.55,
+                0.7
+              ],
+              "durationSource": "league-wiki:Stun Duration",
+              "persistent": false,
+              "sourceText": "They and surrounding enemies are also knocked back and stunned for a duration, during which all targets are revealed."
             }
           ]
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 0.7,
+        "reducibleHardSecondsWithMercs": 0.5,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 2,
         "reducibleSoftSecondsWithMercs": 1.4,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 1,
+        "knownDurationEffects": 2,
         "unknownDurationEffects": 2,
-        "totalEffects": 3,
-        "hardSecondsSavedByMercs": 0,
+        "totalEffects": 4,
+        "hardSecondsSavedByMercs": 0.2,
         "softSecondsSavedByMercs": 0.6
       }
     },
@@ -12795,7 +13022,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "After the cast time, Urgot dashes in the target direction, though not through terrain, dealing physical damage to enemies he passes through, knocking them aside and stunning them for 1 second."
+              "sourceText": "After the cast time, Urgot dashes in the target direction, though not through terrain, dealing physical damage to enemies he passes through, knocking them aside and stunning them for 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -13152,7 +13386,14 @@
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "Active: Vel'Koz hurls a disruptive anomaly that lands to the target location after 0.25 : 0.55 (based on cast distance) seconds, dealing magic damage to enemies hit and knocking them up and stunning them for 0.75 seconds, as well as granting sight of the area briefly."
+              "sourceText": "Active: Vel'Koz hurls a disruptive anomaly that lands to the target location after 0.25 : 0.55 (based on cast distance) seconds, dealing magic damage to enemies hit and knocking them up and stunning them for 0.75 seconds, as well as granting sight of the area briefly.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.75,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -13477,13 +13718,13 @@
         "reducibleHardSecondsWithMercs": 0,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
-        "reducibleSoftSecondsWithMercs": 0.5,
+        "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 1,
         "unknownDurationEffects": 3,
         "totalEffects": 4,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": -0.25
+        "softSecondsSavedByMercs": 0
       }
     },
     "Viktor": {
@@ -13519,6 +13760,19 @@
               "durationSource": "description",
               "persistent": true,
               "sourceText": "After a 0.75-second delay, it activates to slow enemies within for 1 second, refreshing every 0.25 seconds while they remain inside."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 1.5,
+              "durationValues": [
+                1.5
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "The fifth stack consumes them all to knock down and stun the target for 1.5 seconds."
             }
           ]
         },
@@ -13540,16 +13794,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 1,
         "reducibleSoftSecondsWithMercs": 0.7,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 1,
+        "knownDurationEffects": 2,
         "unknownDurationEffects": 0,
-        "totalEffects": 1,
-        "hardSecondsSavedByMercs": 0,
+        "totalEffects": 2,
+        "hardSecondsSavedByMercs": 0.45,
         "softSecondsSavedByMercs": 0.3
       }
     },
@@ -14151,7 +14405,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Xin Zhao sweeps his spear around him, dealing physical damage to nearby enemies, capped at 600 against minions and monsters, and knocking back all targets hit that are not Challenged up-to 700 units over 0.75 seconds, as well as stunning them for the same duration."
+              "sourceText": "Active: Xin Zhao sweeps his spear around him, dealing physical damage to nearby enemies, capped at 600 against minions and monsters, and knocking back all targets hit that are not Challenged up-to 700 units over 0.75 seconds, as well as stunning them for the same duration.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.75,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         }
@@ -14687,7 +14948,7 @@
       ],
       "summary": {
         "reducibleHardSeconds": 0.25,
-        "reducibleHardSecondsWithMercs": 0.5,
+        "reducibleHardSecondsWithMercs": 0.25,
         "unreducibleHardSeconds": 0.75,
         "reducibleSoftSeconds": 0,
         "reducibleSoftSecondsWithMercs": 0,
@@ -14695,7 +14956,7 @@
         "knownDurationEffects": 2,
         "unknownDurationEffects": 1,
         "totalEffects": 3,
-        "hardSecondsSavedByMercs": -0.25,
+        "hardSecondsSavedByMercs": 0,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -14736,7 +14997,14 @@
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "Upon impact of each other, both targets are knocked up and stunned for 0.25 seconds and all enemies within the impact are dealt the initial magic damage and applied the same slow."
+              "sourceText": "Upon impact of each other, both targets are knocked up and stunned for 0.25 seconds and all enemies within the impact are dealt the initial magic damage and applied the same slow.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.25,
+                  "tenacityAffected": true
+                }
+              ]
             },
             {
               "type": "root",
@@ -14779,7 +15047,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Upon landing, he deals magic damage to nearby enemies and knocks them up and stuns them for 0.5 seconds, increased to 1 second if Elastic Slingshot was charged for more than 1 second."
+              "sourceText": "Upon landing, he deals magic damage to nearby enemies and knocks them up and stuns them for 0.5 seconds, increased to 1 second if Elastic Slingshot was charged for more than 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 0.5,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -15212,10 +15487,10 @@
               "type": "sleep",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 1.4,
-              "durationMinSeconds": 1.4,
+              "durationSeconds": 2.25,
+              "durationMinSeconds": 2.25,
               "durationValues": [
-                1.4
+                2.25
               ],
               "durationSource": "description",
               "persistent": false,
@@ -15238,8 +15513,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 1.4,
-        "reducibleHardSecondsWithMercs": 0.98,
+        "reducibleHardSeconds": 2.25,
+        "reducibleHardSecondsWithMercs": 1.58,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 1.4,
         "reducibleSoftSecondsWithMercs": 0.98,
@@ -15247,7 +15522,7 @@
         "knownDurationEffects": 3,
         "unknownDurationEffects": 1,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0.42,
+        "hardSecondsSavedByMercs": 0.67,
         "softSecondsSavedByMercs": 0.42
       }
     },
