@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-06T00:00:00.000Z",
+    "source": "User-provided Lolalytics HTML snippet",
+    "tier": "d2_plus",
+    "patch": "7",
+    "region": "global",
+    "championsRequested": 1,
+    "championsUpdated": 1,
+    "championsRetained": 0,
+    "failures": []
+  },
+  "champions": {
+    "Aurora": {
+      "id": "Aurora",
+      "name": "Aurora",
+      "slug": "aurora",
+      "image": "Aurora.png",
+      "physical": 1720,
+      "magic": 25181,
+      "true": 1443,
+      "reportedTotal": 28345,
+      "componentTotal": 28344,
+      "percentages": {
+        "physical": 6.07,
+        "magic": 88.84,
+        "true": 5.09
+      },
+      "source": "Lolalytics visible champion stats",
+      "sourceUrl": "https://lolalytics.com/lol/aurora/build/?tier=d2_plus&patch=7",
+      "scope": "d2_plus · last 7 days · global",
+      "fetchedAt": "2026-08-06T00:00:00.000Z",
+      "updated": "2026-08-06"
+    }
+  }
+}

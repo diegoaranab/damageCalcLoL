@@ -1,0 +1,13 @@
+{
+  "name": "damage-draft-github-pages",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/test-parser.mjs",
+    "scrape": "node scripts/scrape-lolalytics.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

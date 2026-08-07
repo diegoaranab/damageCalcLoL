@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Damage Draft — League Team Damage Estimator</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-2: #172033;
+      --surface-3: #1d2940;
+      --line: rgba(255,255,255,.09);
+      --text: #f4f7fb;
+      --muted: #9ba9bd;
+      --physical: #f0a44b;
+      --magic: #7a8cff;
+      --true: #e8edf6;
+      --positive: #6bd9a7;
+      --warning: #f5ca66;
+      --danger: #ff7a8a;
+      --shadow: 0 24px 80px rgba(0,0,0,.32);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% -10%, rgba(122,140,255,.18), transparent 32rem),
+        radial-gradient(circle at 88% 0%, rgba(240,164,75,.12), transparent 30rem),
+        linear-gradient(180deg, #0b101b 0%, #080c14 100%);
+    }
+
+    button, input, textarea { font: inherit; }
+    button { color: inherit; }
+
+    .app {
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -.045em;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .subtitle {
+      max-width: 680px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .scope {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #c7d2e4;
+      background: rgba(255,255,255,.035);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(23,32,51,.94), rgba(14,21,34,.94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 20px 20px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -.02em;
+    }
+
+    .panel-caption {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .ghost-button, .primary-button, .icon-button {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .ghost-button {
+      background: rgba(255,255,255,.04);
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, #7688ff, #5569e8);
+      border-color: rgba(255,255,255,.14);
+      padding: 11px 15px;
+      font-weight: 800;
+    }
+
+    .ghost-button:hover, .primary-button:hover, .icon-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+    }
+
+    .slots {
+      display: grid;
+      gap: 10px;
+      padding: 4px 14px 16px;
+    }
+
+    .slot {
+      min-height: 78px;
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      align-items: center;
+      gap: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.025);
+      padding: 11px;
+      position: relative;
+    }
+
+    .portrait {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(122,140,255,.18), rgba(240,164,75,.12)),
+        var(--surface-3);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slot-main { min-width: 0; }
+
+    .champion-search {
+      position: relative;
+    }
+
+    .champion-input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      background: transparent;
+      padding: 3px 0;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .champion-input::placeholder { color: #6f7e94; font-weight: 650; }
+
+    .slot-meta {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      min-height: 16px;
+    }
+
+    .status-missing { color: var(--warning); }
+    .status-ready { color: var(--positive); }
+
+    .dropdown {
+      position: absolute;
+      z-index: 20;
+      left: -59px;
+      right: -58px;
+      top: calc(100% + 9px);
+      max-height: 286px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 16px;
+      background: #101827;
+      box-shadow: 0 24px 60px rgba(0,0,0,.48);
+      padding: 7px;
+    }
+
+    .dropdown[hidden] { display: none; }
+
+    .dropdown-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      padding: 8px;
+      border-radius: 11px;
+      cursor: pointer;
+    }
+
+    .dropdown-item:hover, .dropdown-item[aria-selected="true"] {
+      background: rgba(122,140,255,.13);
+    }
+
+    .dropdown-item img {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+    }
+
+    .slot-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-button {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,.035);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .summary-wrap {
+      padding: 4px 18px 18px;
+    }
+
+    .summary-top {
+      display: grid;
+      grid-template-columns: 176px 1fr;
+      gap: 22px;
+      align-items: center;
+      padding: 14px 0 18px;
+    }
+
+    .donut {
+      width: 176px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background: conic-gradient(var(--physical) 0 0%, var(--magic) 0 0%, var(--true) 0 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: inherit;
+      background: #121b2b;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .donut-center {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .donut-value {
+      font-size: 29px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .donut-label {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 12px;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 9px 1fr auto;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .legend-name {
+      font-size: 13px;
+      color: #c9d3e3;
+    }
+
+    .legend-value {
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar {
+      height: 7px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: rgba(255,255,255,.06);
+      margin-top: 5px;
+    }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      transition: width .25s ease;
+    }
+
+    .recommendation {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.027);
+      padding: 15px;
+    }
+
+    .recommendation-kicker {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: .12em;
+      font-weight: 900;
+    }
+
+    .recommendation-title {
+      margin: 7px 0 5px;
+      font-size: 19px;
+      letter-spacing: -.025em;
+    }
+
+    .recommendation-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .champ-breakdown {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .breakdown-row {
+      display: grid;
+      grid-template-columns: 31px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 9px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(0,0,0,.08);
+    }
+
+    .breakdown-row img {
+      width: 31px;
+      height: 31px;
+      border-radius: 9px;
+    }
+
+    .breakdown-name {
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .breakdown-mini {
+      margin-top: 3px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .breakdown-total {
+      color: #dce4f1;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .empty {
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 18px 18px;
+    }
+
+    .fine-print {
+      color: #718096;
+      font-size: 10px;
+      line-height: 1.5;
+      padding: 0 20px 20px;
+    }
+
+    dialog {
+      width: min(560px, calc(100% - 28px));
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 22px;
+      color: var(--text);
+      background: #101827;
+      box-shadow: 0 30px 100px rgba(0,0,0,.6);
+      padding: 0;
+    }
+
+    dialog::backdrop {
+      background: rgba(3,7,14,.75);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .modal-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .modal-body { padding: 18px 20px; }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: #cbd5e5;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    input[type="number"], textarea {
+      width: 100%;
+      color: var(--text);
+      background: #0b1220;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 12px;
+      outline: 0;
+    }
+
+    input[type="number"]:focus, textarea:focus {
+      border-color: rgba(122,140,255,.65);
+      box-shadow: 0 0 0 3px rgba(122,140,255,.12);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    .paste-block {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .paste-title {
+      font-size: 12px;
+      font-weight: 850;
+      margin: 0 0 7px;
+    }
+
+    .paste-help {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 20px 20px;
+    }
+
+    .modal-footer-right {
+      display: flex;
+      gap: 8px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      background: #eef3fb;
+      color: #111827;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 18px 50px rgba(0,0,0,.3);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 100;
+    }
+
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 940px) {
+      .layout { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; }
+      .scope { justify-content: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .app { width: min(100% - 18px, 1240px); padding-top: 18px; }
+      .summary-top { grid-template-columns: 1fr; justify-items: center; }
+      .legend { width: 100%; }
+      .input-grid { grid-template-columns: 1fr; }
+      .slot { grid-template-columns: 42px 1fr; }
+      .slot-actions { grid-column: 2; }
+      .dropdown { left: -55px; right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Personal matchup utility</div>
+        <h1>Damage Draft</h1>
+        <p class="subtitle">
+          Select the five enemy champions and compare their combined average physical,
+          magic, and true damage. Profiles are stored only in your browser.
+        </p>
+      </div>
+      <div class="scope" aria-label="Current data scope">
+        <span class="pill">D2+</span>
+        <span class="pill">Last 7 days</span>
+        <span class="pill">Global</span>
+        <span class="pill" id="data-freshness">Bundled data</span>
+      </div>
+    </header>
+
+    <section class="layout">
+      <section class="panel" aria-labelledby="enemy-team-title">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title" id="enemy-team-title">Enemy team</h2>
+            <p class="panel-caption">Search by champion name. Add the average stats once and they remain saved.</p>
+          </div>
+          <button class="ghost-button" id="clear-team" type="button">Clear team</button>
+        </div>
+
+        <div class="slots" id="slots"></div>
+
+        <div class="toolbar">
+          <button class="ghost-button" id="export-data" type="button">Export profiles</button>
+          <button class="ghost-button" id="import-data" type="button">Import profiles</button>
+          <input id="import-file" type="file" accept="application/json" hidden />
+        </div>
+
+        <p class="fine-print">
+          The included Nocturne profile is a demonstration based on the referenced Lolalytics page.
+          Automated profiles are loaded from <code>data/champion-damage.json</code>, which is refreshed
+          by GitHub Actions. Manual entries remain available as a local fallback and override automated values.
+        </p>
+      </section>
+
+      <aside class="panel" aria-labelledby="summary-title">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title" id="summary-title">Team damage profile</h2>
+            <p class="panel-caption" id="coverage-label">0 of 5 champions have data</p>
+          </div>
+        </div>
+
+        <div class="summary-wrap">
+          <div class="summary-top">
+            <div class="donut" id="donut" aria-label="Damage split chart">
+              <div class="donut-center">
+                <div class="donut-value" id="dominant-value">0%</div>
+                <div class="donut-label" id="dominant-label">No data</div>
+              </div>
+            </div>
+
+            <div class="legend">
+              <div>
+                <div class="legend-row">
+                  <span class="dot" style="background:var(--physical)"></span>
+                  <span class="legend-name">Physical</span>
+                  <span class="legend-value" id="physical-percent">0.0%</span>
+                </div>
+                <div class="bar"><span id="physical-bar" style="background:var(--physical)"></span></div>
+              </div>
+
+              <div>
+                <div class="legend-row">
+                  <span class="dot" style="background:var(--magic)"></span>
+                  <span class="legend-name">Magic</span>
+                  <span class="legend-value" id="magic-percent">0.0%</span>
+                </div>
+                <div class="bar"><span id="magic-bar" style="background:var(--magic)"></span></div>
+              </div>
+
+              <div>
+                <div class="legend-row">
+                  <span class="dot" style="background:var(--true)"></span>
+                  <span class="legend-name">True</span>
+                  <span class="legend-value" id="true-percent">0.0%</span>
+                </div>
+                <div class="bar"><span id="true-bar" style="background:var(--true)"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <section class="recommendation" aria-live="polite">
+            <div class="recommendation-kicker">Defensive baseline</div>
+            <h3 class="recommendation-title" id="recommendation-title">Select enemy champions</h3>
+            <p class="recommendation-copy" id="recommendation-copy">
+              Add damage profiles to calculate the team split.
+            </p>
+          </section>
+
+          <div class="champ-breakdown" id="champ-breakdown"></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="stats-dialog">
+    <form method="dialog" id="stats-form">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-title">Champion damage profile</h2>
+          <p>Use average damage dealt to champions for the same rank, role, region, and time window.</p>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-grid">
+          <label>
+            Physical damage
+            <input id="physical-input" type="number" inputmode="numeric" min="0" step="1" />
+          </label>
+          <label>
+            Magic damage
+            <input id="magic-input" type="number" inputmode="numeric" min="0" step="1" />
+          </label>
+          <label>
+            True damage
+            <input id="true-input" type="number" inputmode="numeric" min="0" step="1" />
+          </label>
+        </div>
+
+        <div class="paste-block">
+          <p class="paste-title">Quick paste</p>
+          <p class="paste-help">
+            Paste a visible stats section containing lines such as “Physical Damage: 17,896”,
+            “Magic Damage: 1,138”, and “True Damage: 2,259”.
+          </p>
+          <textarea id="paste-input" placeholder="Paste the champion stats text here…"></textarea>
+          <button class="ghost-button" id="parse-paste" type="button" style="margin-top:9px">Parse values</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="ghost-button" id="open-source" type="button">Open source page</button>
+        <div class="modal-footer-right">
+          <button class="ghost-button" value="cancel">Cancel</button>
+          <button class="primary-button" id="save-stats" value="default">Save profile</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const SLOT_COUNT = 5;
+    const STORAGE_PROFILES = "damageDraft.profiles.v1";
+    const STORAGE_TEAM = "damageDraft.team.v1";
+
+    const fallbackChampions = [
+      { id: "Nocturne", name: "Nocturne", image: { full: "Nocturne.png" } },
+      { id: "Aatrox", name: "Aatrox", image: { full: "Aatrox.png" } },
+      { id: "Ahri", name: "Ahri", image: { full: "Ahri.png" } },
+      { id: "Ashe", name: "Ashe", image: { full: "Ashe.png" } },
+      { id: "Darius", name: "Darius", image: { full: "Darius.png" } },
+      { id: "Garen", name: "Garen", image: { full: "Garen.png" } },
+      { id: "Jinx", name: "Jinx", image: { full: "Jinx.png" } },
+      { id: "Lux", name: "Lux", image: { full: "Lux.png" } },
+      { id: "Morgana", name: "Morgana", image: { full: "Morgana.png" } },
+      { id: "Yasuo", name: "Yasuo", image: { full: "Yasuo.png" } }
+    ];
+
+    const builtInProfiles = {
+      Nocturne: {
+        physical: 17896,
+        magic: 1138,
+        true: 2259,
+        source: "Lolalytics visible champion stats",
+        scope: "D2+ · last 7 days · global",
+        updated: "2026-08-06"
+      }
+    };
+
+    const slugOverrides = {
+      "Nunu & Willump": "nunu",
+      "Renata Glasc": "renata",
+      "Wukong": "wukong"
+    };
+
+    let ddragonVersion = "16.15.1";
+    let champions = [];
+    let activeSlot = null;
+    let editingChampionId = null;
+
+    const storedProfiles = safeParse(localStorage.getItem(STORAGE_PROFILES), {});
+    const profiles = { ...builtInProfiles, ...storedProfiles };
+    let team = safeParse(localStorage.getItem(STORAGE_TEAM), Array(SLOT_COUNT).fill(null));
+    if (!Array.isArray(team) || team.length !== SLOT_COUNT) team = Array(SLOT_COUNT).fill(null);
+
+    const slotsEl = document.getElementById("slots");
+    const dialog = document.getElementById("stats-dialog");
+    const modalTitle = document.getElementById("modal-title");
+    const physicalInput = document.getElementById("physical-input");
+    const magicInput = document.getElementById("magic-input");
+    const trueInput = document.getElementById("true-input");
+    const pasteInput = document.getElementById("paste-input");
+    const toast = document.getElementById("toast");
+
+    function safeParse(value, fallback) {
+      try { return value ? JSON.parse(value) : fallback; }
+      catch { return fallback; }
+    }
+
+    function normalize(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function championImage(champion) {
+      return `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/champion/${champion.image.full}`;
+    }
+
+    function getChampion(id) {
+      return champions.find(c => c.id === id) || null;
+    }
+
+    function number(value) {
+      const parsed = Number(String(value ?? "").replace(/,/g, ""));
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+    }
+
+    function fmt(value) {
+      return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(value || 0);
+    }
+
+    function pct(value) {
+      return `${(value || 0).toFixed(1)}%`;
+    }
+
+    async function loadAutomatedProfiles() {
+      try {
+        const response = await fetch(`./data/champion-damage.json?ts=${Date.now()}`, {
+          cache: "no-store"
+        });
+        if (!response.ok) throw new Error(`Data request failed: ${response.status}`);
+
+        const payload = await response.json();
+        Object.assign(profiles, payload.champions || {}, storedProfiles);
+
+        const generatedAt = payload.meta?.generatedAt;
+        if (generatedAt) {
+          const formatted = new Intl.DateTimeFormat("en", {
+            dateStyle: "medium",
+            timeStyle: "short"
+          }).format(new Date(generatedAt));
+          document.getElementById("data-freshness").textContent = `Updated ${formatted}`;
+        }
+      } catch (error) {
+        console.warn("Could not load automated champion profiles.", error);
+        showToast("Automated data unavailable; manual profiles still work");
+      }
+    }
+
+    async function loadChampions() {
+      await loadAutomatedProfiles();
+      try {
+        const versionsRes = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+        const versions = await versionsRes.json();
+        ddragonVersion = versions[0];
+
+        const champRes = await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/champion.json`
+        );
+        const payload = await champRes.json();
+        champions = Object.values(payload.data).sort((a, b) => a.name.localeCompare(b.name));
+      } catch (error) {
+        console.warn("Could not load Data Dragon. Using fallback champion list.", error);
+        champions = fallbackChampions;
+        showToast("Using fallback champion list");
+      }
+
+      renderSlots();
+      calculate();
+    }
+
+    function renderSlots() {
+      slotsEl.innerHTML = "";
+
+      team.forEach((championId, index) => {
+        const champion = getChampion(championId);
+        const profile = championId ? profiles[championId] : null;
+
+        const slot = document.createElement("article");
+        slot.className = "slot";
+        slot.dataset.index = index;
+
+        const portrait = document.createElement("div");
+        portrait.className = "portrait";
+        portrait.innerHTML = champion
+          ? `<img src="${championImage(champion)}" alt="" />`
+          : `<span>${index + 1}</span>`;
+
+        const main = document.createElement("div");
+        main.className = "slot-main";
+
+        const search = document.createElement("div");
+        search.className = "champion-search";
+
+        const input = document.createElement("input");
+        input.className = "champion-input";
+        input.type = "text";
+        input.autocomplete = "off";
+        input.placeholder = "Choose champion";
+        input.value = champion?.name || "";
+        input.setAttribute("aria-label", `Enemy champion ${index + 1}`);
+        input.setAttribute("role", "combobox");
+        input.setAttribute("aria-expanded", "false");
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "dropdown";
+        dropdown.hidden = true;
+
+        input.addEventListener("focus", () => {
+          activeSlot = index;
+          renderDropdown(dropdown, input.value, index);
+        });
+
+        input.addEventListener("input", () => {
+          activeSlot = index;
+          renderDropdown(dropdown, input.value, index);
+        });
+
+        input.addEventListener("keydown", event => {
+          if (event.key === "Escape") {
+            dropdown.hidden = true;
+            input.setAttribute("aria-expanded", "false");
+            input.blur();
+          }
+          if (event.key === "Enter" && !dropdown.hidden) {
+            const first = dropdown.querySelector(".dropdown-item");
+            if (first) {
+              event.preventDefault();
+              first.click();
+            }
+          }
+        });
+
+        search.append(input, dropdown);
+
+        const meta = document.createElement("div");
+        meta.className = "slot-meta";
+        if (!champion) {
+          meta.innerHTML = "<span>Empty slot</span>";
+        } else if (profile) {
+          const total = number(profile.physical) + number(profile.magic) + number(profile.true);
+          meta.innerHTML = `<span class="status-ready">Profile ready</span><span>${fmt(total)} avg total</span>`;
+        } else {
+          meta.innerHTML = `<span class="status-missing">Stats needed</span><span>Saved locally after entry</span>`;
+        }
+
+        main.append(search, meta);
+
+        const actions = document.createElement("div");
+        actions.className = "slot-actions";
+
+        if (champion) {
+          const edit = document.createElement("button");
+          edit.type = "button";
+          edit.className = "icon-button";
+          edit.title = profile ? "Edit damage profile" : "Add damage profile";
+          edit.setAttribute("aria-label", edit.title);
+          edit.textContent = profile ? "✎" : "+";
+          edit.addEventListener("click", () => openStatsDialog(champion.id));
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "icon-button";
+          remove.title = "Remove champion";
+          remove.setAttribute("aria-label", remove.title);
+          remove.textContent = "×";
+          remove.addEventListener("click", () => setChampion(index, null));
+
+          actions.append(edit, remove);
+        }
+
+        slot.append(portrait, main, actions);
+        slotsEl.append(slot);
+      });
+    }
+
+    function renderDropdown(dropdown, query, slotIndex) {
+      const currentTeam = new Set(team.filter(Boolean));
+      const needle = normalize(query);
+      const matches = champions
+        .filter(champion => normalize(champion.name).includes(needle))
+        .filter(champion => !currentTeam.has(champion.id) || team[slotIndex] === champion.id)
+        .slice(0, 24);
+
+      dropdown.innerHTML = "";
+
+      if (!matches.length) {
+        dropdown.innerHTML = `<div class="empty">No champion found</div>`;
+      } else {
+        for (const champion of matches) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "dropdown-item";
+          button.innerHTML = `
+            <img src="${championImage(champion)}" alt="" />
+            <span>${champion.name}</span>
+          `;
+          button.addEventListener("mousedown", event => event.preventDefault());
+          button.addEventListener("click", () => {
+            setChampion(slotIndex, champion.id);
+            dropdown.hidden = true;
+          });
+          dropdown.append(button);
+        }
+      }
+
+      dropdown.hidden = false;
+      const input = dropdown.previousElementSibling;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    function setChampion(index, championId) {
+      team[index] = championId;
+      localStorage.setItem(STORAGE_TEAM, JSON.stringify(team));
+      renderSlots();
+      calculate();
+
+      if (championId && !profiles[championId]) {
+        openStatsDialog(championId);
+      }
+    }
+
+    function openStatsDialog(championId) {
+      const champion = getChampion(championId);
+      if (!champion) return;
+
+      editingChampionId = championId;
+      const profile = profiles[championId] || {};
+
+      modalTitle.textContent = `${champion.name} damage profile`;
+      physicalInput.value = profile.physical ?? "";
+      magicInput.value = profile.magic ?? "";
+      trueInput.value = profile.true ?? "";
+      pasteInput.value = "";
+      dialog.showModal();
+    }
+
+    function lolalyticsSlug(champion) {
+      if (slugOverrides[champion.name]) return slugOverrides[champion.name];
+      return champion.name
+        .toLowerCase()
+        .replace(/&.*$/g, "")
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    function calculate() {
+      const selected = team
+        .map(id => ({ champion: getChampion(id), profile: id ? profiles[id] : null }))
+        .filter(item => item.champion);
+
+      const ready = selected.filter(item => item.profile);
+      const totals = ready.reduce((acc, item) => {
+        acc.physical += number(item.profile.physical);
+        acc.magic += number(item.profile.magic);
+        acc.true += number(item.profile.true);
+        return acc;
+      }, { physical: 0, magic: 0, true: 0 });
+
+      const grandTotal = totals.physical + totals.magic + totals.true;
+      const shares = grandTotal
+        ? {
+            physical: totals.physical / grandTotal * 100,
+            magic: totals.magic / grandTotal * 100,
+            true: totals.true / grandTotal * 100
+          }
+        : { physical: 0, magic: 0, true: 0 };
+
+      document.getElementById("coverage-label").textContent =
+        `${ready.length} of ${selected.length || 5} selected champions have data`;
+
+      setText("physical-percent", pct(shares.physical));
+      setText("magic-percent", pct(shares.magic));
+      setText("true-percent", pct(shares.true));
+
+      document.getElementById("physical-bar").style.width = `${shares.physical}%`;
+      document.getElementById("magic-bar").style.width = `${shares.magic}%`;
+      document.getElementById("true-bar").style.width = `${shares.true}%`;
+
+      const physicalStop = shares.physical;
+      const magicStop = physicalStop + shares.magic;
+      document.getElementById("donut").style.background =
+        `conic-gradient(
+          var(--physical) 0 ${physicalStop}%,
+          var(--magic) ${physicalStop}% ${magicStop}%,
+          var(--true) ${magicStop}% 100%
+        )`;
+
+      const dominant = Object.entries(shares).sort((a, b) => b[1] - a[1])[0];
+      setText("dominant-value", grandTotal ? pct(dominant[1]) : "0%");
+      setText("dominant-label", grandTotal ? `${capitalize(dominant[0])} dominant` : "No data");
+
+      updateRecommendation(shares, selected.length, ready.length);
+      renderBreakdown(ready);
+    }
+
+    function updateRecommendation(shares, selectedCount, readyCount) {
+      const title = document.getElementById("recommendation-title");
+      const copy = document.getElementById("recommendation-copy");
+
+      if (!selectedCount || !readyCount) {
+        title.textContent = selectedCount ? "Complete the damage profiles" : "Select enemy champions";
+        copy.textContent = selectedCount
+          ? "At least one selected champion still needs average damage values."
+          : "Add damage profiles to calculate the team split.";
+        return;
+      }
+
+      if (readyCount < selectedCount) {
+        title.textContent = "Partial calculation";
+        copy.textContent = `This result only includes ${readyCount} of ${selectedCount} selected champions. Complete the missing profiles before relying on it.`;
+        return;
+      }
+
+      const gap = shares.physical - shares.magic;
+
+      if (gap >= 15) {
+        title.textContent = "Armor is the stronger baseline";
+        copy.textContent =
+          `The team profile is ${pct(shares.physical)} physical versus ${pct(shares.magic)} magic. ` +
+          "That leans toward Plated Steelcaps when basic attacks are also a major threat. Crowd control can still make Mercury's Treads the better purchase.";
+      } else if (gap <= -15) {
+        title.textContent = "Magic resistance is the stronger baseline";
+        copy.textContent =
+          `The team profile is ${pct(shares.magic)} magic versus ${pct(shares.physical)} physical. ` +
+          "That leans toward Mercury's Treads, especially when the enemy team also has meaningful reducible crowd control.";
+      } else {
+        title.textContent = "Mixed damage composition";
+        copy.textContent =
+          `Physical and magic damage are relatively close (${pct(shares.physical)} / ${pct(shares.magic)}). ` +
+          "Choose boots from the actual threats: repeated attacks favor Steelcaps; magic damage plus reducible crowd control favors Mercs.";
+      }
+    }
+
+    function renderBreakdown(ready) {
+      const container = document.getElementById("champ-breakdown");
+      container.innerHTML = "";
+
+      if (!ready.length) {
+        container.innerHTML = `<div class="empty">Champion-level breakdown will appear here.</div>`;
+        return;
+      }
+
+      for (const { champion, profile } of ready) {
+        const physical = number(profile.physical);
+        const magic = number(profile.magic);
+        const trueDamage = number(profile.true);
+        const total = physical + magic + trueDamage;
+        const physicalShare = total ? physical / total * 100 : 0;
+        const magicShare = total ? magic / total * 100 : 0;
+        const trueShare = total ? trueDamage / total * 100 : 0;
+
+        const row = document.createElement("div");
+        row.className = "breakdown-row";
+        row.innerHTML = `
+          <img src="${championImage(champion)}" alt="" />
+          <div style="min-width:0">
+            <div class="breakdown-name">${champion.name}</div>
+            <div class="breakdown-mini">
+              P ${physicalShare.toFixed(0)}% · M ${magicShare.toFixed(0)}% · T ${trueShare.toFixed(0)}%
+            </div>
+          </div>
+          <div class="breakdown-total">${fmt(total)}</div>
+        `;
+        container.append(row);
+      }
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function capitalize(value) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function parseStatsText(text) {
+      const compact = text.replace(/\r/g, "");
+      const patterns = {
+        physical: /physical\s+damage\s*:?\s*([\d,]+)/i,
+        magic: /magic(?:al)?\s+damage\s*:?\s*([\d,]+)/i,
+        true: /true\s+damage\s*:?\s*([\d,]+)/i
+      };
+
+      const result = {};
+      for (const [key, pattern] of Object.entries(patterns)) {
+        const match = compact.match(pattern);
+        if (match) result[key] = number(match[1]);
+      }
+      return result;
+    }
+
+    document.getElementById("parse-paste").addEventListener("click", () => {
+      const parsed = parseStatsText(pasteInput.value);
+      if (parsed.physical == null && parsed.magic == null && parsed.true == null) {
+        showToast("No damage values found");
+        return;
+      }
+
+      if (parsed.physical != null) physicalInput.value = parsed.physical;
+      if (parsed.magic != null) magicInput.value = parsed.magic;
+      if (parsed.true != null) trueInput.value = parsed.true;
+      showToast("Values parsed");
+    });
+
+    document.getElementById("stats-form").addEventListener("submit", event => {
+      if (event.submitter?.value === "cancel") return;
+      event.preventDefault();
+
+      if (!editingChampionId) return;
+
+      profiles[editingChampionId] = {
+        physical: number(physicalInput.value),
+        magic: number(magicInput.value),
+        true: number(trueInput.value),
+        source: "Manual entry",
+        scope: "D2+ · last 7 days · global",
+        updated: new Date().toISOString().slice(0, 10)
+      };
+
+      const customProfiles = Object.fromEntries(
+        Object.entries(profiles).filter(([id]) => !builtInProfiles[id] || JSON.stringify(profiles[id]) !== JSON.stringify(builtInProfiles[id]))
+      );
+
+      localStorage.setItem(STORAGE_PROFILES, JSON.stringify(customProfiles));
+      dialog.close();
+      renderSlots();
+      calculate();
+      showToast("Profile saved");
+    });
+
+    document.getElementById("open-source").addEventListener("click", () => {
+      const champion = getChampion(editingChampionId);
+      if (!champion) return;
+      const slug = lolalyticsSlug(champion);
+      window.open(
+        `https://lolalytics.com/lol/${slug}/build/?tier=d2_plus&patch=7`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    });
+
+    document.getElementById("clear-team").addEventListener("click", () => {
+      team = Array(SLOT_COUNT).fill(null);
+      localStorage.setItem(STORAGE_TEAM, JSON.stringify(team));
+      renderSlots();
+      calculate();
+      showToast("Team cleared");
+    });
+
+    document.getElementById("export-data").addEventListener("click", () => {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        profiles
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `damage-draft-profiles-${new Date().toISOString().slice(0, 10)}.json`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("import-data").addEventListener("click", () => {
+      document.getElementById("import-file").click();
+    });
+
+    document.getElementById("import-file").addEventListener("change", async event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const payload = JSON.parse(await file.text());
+        const imported = payload.profiles || payload;
+        if (!imported || typeof imported !== "object") throw new Error("Invalid profiles");
+
+        Object.assign(profiles, imported);
+        localStorage.setItem(STORAGE_PROFILES, JSON.stringify(imported));
+        renderSlots();
+        calculate();
+        showToast("Profiles imported");
+      } catch {
+        showToast("Could not import that file");
+      } finally {
+        event.target.value = "";
+      }
+    });
+
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".champion-search")) {
+        document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.hidden = true);
+        document.querySelectorAll(".champion-input").forEach(input => input.setAttribute("aria-expanded", "false"));
+      }
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    loadChampions();
+  </script>
+</body>
+</html>
