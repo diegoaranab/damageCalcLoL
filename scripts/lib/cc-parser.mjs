@@ -60,6 +60,9 @@ export const TENACITY_MIN_DURATION_SECONDS = 0.5;
 
 export function stripMarkup(value = "") {
   return String(value)
+    // League Wiki uses typographic dash/minus characters for numeric ranges (for
+    // example Braum P: 1.25 − 1.75 seconds). Normalize them before regex parsing.
+    .replace(/[−–—]/g, "-")
     .replace(/<br\s*\/?\s*>/gi, ". ")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/gi, " ")
