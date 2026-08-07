@@ -1,9 +1,9 @@
 {
   "meta": {
-    "generatedAt": "2026-08-07T06:23:36.706Z",
+    "generatedAt": "2026-08-07T07:03:47.119Z",
     "patch": "16.15.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
-    "parserVersion": 2,
+    "parserVersion": 3,
     "mercurysTreadsTenacity": 0.3,
     "tenacityMinimumDurationSeconds": 0.5,
     "tenacityUnaffected": [
@@ -18,8 +18,8 @@
     "wikiChampions": 173,
     "fallbackChampions": 0,
     "parsedEffects": 450,
-    "knownDurationEffects": 338,
-    "timedCoveragePercent": 75.1,
+    "knownDurationEffects": 341,
+    "timedCoveragePercent": 75.8,
     "failures": []
   },
   "champions": {
@@ -728,10 +728,14 @@
               "type": "stun",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.75,
+              "durationMinSeconds": 1.25,
+              "durationValues": [
+                1.25,
+                1.5,
+                1.75
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Energized: Annie empowers her next cast of Disintegrate, Incinerate, or Summon: Tibbers to consume all Pyromania stacks to stun enemies hit for 1.25 / 1.5 / 1.75 (based on level) seconds."
             }
@@ -771,16 +775,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.75,
+        "reducibleHardSecondsWithMercs": 1.22,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0,
         "reducibleSoftSecondsWithMercs": 0,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 0,
-        "unknownDurationEffects": 1,
+        "knownDurationEffects": 1,
+        "unknownDurationEffects": 0,
         "totalEffects": 1,
-        "hardSecondsSavedByMercs": 0,
+        "hardSecondsSavedByMercs": 0.53,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -13203,24 +13207,34 @@
           "source": "league-wiki-meraki",
           "effects": [
             {
-              "type": "flee",
+              "type": "fear",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                1,
+                1.25,
+                1.5
+              ],
+              "durationSource": "description",
               "persistent": false,
-              "sourceText": "If Looming Darkness triggers Doom, enemies hit will flee from the epicenter instead.Doom's cooldown resets upon respawning."
+              "sourceText": "Passive - Doom: Periodically, Vex empowers her next basic ability to knock down and fear enemies hit for 0.75 / 1 / 1.25 / 1.5 (based on level) seconds, during which they are slowed by 60% : 99% (based on distance from Vex)."
             },
             {
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": null,
-              "durationMinSeconds": null,
-              "durationValues": null,
-              "durationSource": null,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 0.75,
+              "durationValues": [
+                0.75,
+                1,
+                1.25,
+                1.5
+              ],
+              "durationSource": "description",
               "persistent": false,
               "sourceText": "Passive - Doom: Periodically, Vex empowers her next basic ability to knock down and fear enemies hit for 0.75 / 1 / 1.25 / 1.5 (based on level) seconds, during which they are slowed by 60% : 99% (based on distance from Vex)."
             }
@@ -13266,17 +13280,17 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.05,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 2,
-        "reducibleSoftSecondsWithMercs": 1.4,
+        "reducibleSoftSeconds": 3.5,
+        "reducibleSoftSecondsWithMercs": 2.45,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 1,
-        "unknownDurationEffects": 2,
+        "knownDurationEffects": 3,
+        "unknownDurationEffects": 0,
         "totalEffects": 3,
-        "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0.6
+        "hardSecondsSavedByMercs": 0.45,
+        "softSecondsSavedByMercs": 1.05
       }
     },
     "Vi": {
