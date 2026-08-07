@@ -1,8 +1,6 @@
 name: Update champion damage and deploy Pages
 
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: "17 5 * * *"
       timezone: "America/Mexico_City"
@@ -40,10 +38,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test parser
+      - name: Test parsers
         run: npm test
 
-      - name: Refresh champion data
+      - name: Refresh champion damage data
         env:
           CHAMPIONS: ${{ github.event.inputs.champions || '' }}
           LOLALYTICS_TIER: d2_plus
@@ -57,7 +55,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data/champion-damage.json
           if git diff --cached --quiet; then
-            echo "No data changes to commit."
+            echo "No damage data changes to commit."
           else
             git commit -m "chore(data): refresh champion damage"
             git push

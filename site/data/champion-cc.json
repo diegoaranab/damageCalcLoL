@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "generatedAt": null,
+    "patch": null,
+    "source": "Generated on first patch-check workflow run",
+    "parserVersion": 1,
+    "mercurysTreadsTenacity": 0.3,
+    "tenacityMinimumDurationSeconds": 0.5,
+    "failures": []
+  },
+  "champions": {}
+}

@@ -1,0 +1,111 @@
+name: Check champion ability data
+
+on:
+  schedule:
+    - cron: "7 6 * * *"
+      timezone: "America/Mexico_City"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build-cc-data.mjs"
+      - "scripts/check-patch.mjs"
+      - "scripts/enable-cc-ui.mjs"
+      - "scripts/lib/cc-parser.mjs"
+      - "scripts/test-cc-parser.mjs"
+      - "site/data/champion-cc.json"
+      - ".github/workflows/check-champion-data.yml"
+      - "package.json"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild crowd-control data even if the Riot patch has not changed"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: champion-ability-data
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.patch.outputs.changed }}
+      latest_patch: ${{ steps.patch.outputs.latest_patch }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test crowd-control parser
+        run: npm run test:cc
+
+      - name: Check Riot patch
+        id: patch
+        env:
+          FORCE_CC_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force && '1' || '0' }}
+        run: npm run cc:check
+
+      - name: Enable crowd-control UI
+        if: steps.patch.outputs.changed == 'true'
+        run: npm run ui:enable
+
+      - name: Build crowd-control data
+        if: steps.patch.outputs.changed == 'true'
+        run: npm run cc:build
+
+      - name: Commit crowd-control data and UI bootstrap
+        if: steps.patch.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/index.html site/data/champion-cc.json
+          if git diff --cached --quiet; then
+            echo "No crowd-control data or UI bootstrap changes to commit."
+          else
+            git commit -m "chore(data): refresh champion crowd control"
+            git push
+          fi
+
+      - name: Configure GitHub Pages
+        if: steps.patch.outputs.changed == 'true'
+        uses: actions/configure-pages@v6
+
+      - name: Upload GitHub Pages artifact
+        if: steps.patch.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
