@@ -46,6 +46,13 @@ assert.equal(braumStun.durationMinSeconds, 1.25, "Braum passive minimum stun dur
 assert.equal(braumStun.durationSeconds, 1.75, "Braum passive maximum stun duration must parse from a Unicode minus range");
 assert.equal(braumStun.tenacityAffected, true);
 
+const braumMerakiRange = parseCrowdControlText(
+  "The fourth stack against a target consumes them all to deal 26 : 196 (based on level) magic damage and stun them for 1.25 : 1.75 (based on level) seconds."
+);
+const braumMerakiStun = braumMerakiRange.find(effect => effect.type === "stun");
+assert.equal(braumMerakiStun?.durationMinSeconds, 1.25, "Meraki colon ranges must preserve the minimum duration");
+assert.equal(braumMerakiStun?.durationSeconds, 1.75, "Meraki colon ranges must preserve the maximum duration");
+
 const threshDeathSentence = parseCrowdControlText(
   "The scythe catches the first enemy hit to deal magic damage, stun and reveal them for 1.5 seconds, and render them airborne for 0.4 seconds, as well as reduce Death Sentence's current cooldown by 2 seconds."
 );
