@@ -22,6 +22,20 @@ assert.ok(
   `Known-duration hard-CC coverage is ${(hardCoverage * 100).toFixed(1)}%; expected at least 45%`
 );
 
+for (const champion of Object.values(champions)) {
+  const summary = champion.summary || {};
+  assert.ok(
+    Number(summary.reducibleHardSecondsWithMercs || 0) <= Number(summary.reducibleHardSeconds || 0) + 1e-9,
+    `${champion.name}: Mercs must not increase reducible hard-CC duration`
+  );
+  assert.ok(
+    Number(summary.reducibleSoftSecondsWithMercs || 0) <= Number(summary.reducibleSoftSeconds || 0) + 1e-9,
+    `${champion.name}: Mercs must not increase reducible soft-CC duration`
+  );
+  assert.ok(Number(summary.hardSecondsSavedByMercs || 0) >= -1e-9, `${champion.name}: hard-CC savings must not be negative`);
+  assert.ok(Number(summary.softSecondsSavedByMercs || 0) >= -1e-9, `${champion.name}: soft-CC savings must not be negative`);
+}
+
 function effectsFor(championId, slot) {
   return (champions[championId]?.abilities || [])
     .filter(ability => ability.slot === slot || ability.slot.startsWith(slot))
