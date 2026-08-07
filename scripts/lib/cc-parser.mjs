@@ -94,10 +94,11 @@ export function extractDuration(sentence, matchIndex = 0) {
     sentence
   ];
 
-  // League Wiki frequently inserts a qualifier such as "(based on level)" between
-  // a duration value list and the word "seconds". Treat that qualifier as metadata,
-  // not as a barrier to resolving the duration.
-  const qualifier = String.raw`(?:\s*\([^)]{1,80}\))?`;
+  // League Wiki frequently inserts metadata such as "(based on level)" between a
+  // duration value list and "seconds". Accept those annotations, but deliberately
+  // reject scaling expressions such as "(+ 0.5 per 100 AP)" rather than pretending
+  // their base value is the complete duration.
+  const qualifier = String.raw`(?:\s*\(based on [^)]{1,65}\))?`;
   const numberList = String.raw`(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})`;
   const patterns = [
     new RegExp(String.raw`(?:for|lasting|lasts|duration(?: of)?|over)\s+${numberList}${qualifier}\s*(?:seconds?|secs?|s)\b`, "i"),
