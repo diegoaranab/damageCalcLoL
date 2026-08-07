@@ -26,6 +26,21 @@ assert.equal(summary.reducibleHardSeconds, 3);
 assert.equal(summary.reducibleHardSecondsWithMercs, 2.25); // 0.7 + 0.5 floor + 1.05
 assert.equal(summary.hardSecondsSavedByMercs, 0.75);
 
+const vexDoom = parseCrowdControlText(
+  "Passive - Doom: Periodically, Vex empowers her next basic ability to knock down and fear enemies hit for 0.75 / 1 / 1.25 / 1.5 (based on level) seconds, during which they are slowed by 60% : 99% (based on distance from Vex). If Looming Darkness triggers Doom, enemies hit will flee from the epicenter instead."
+);
+const vexFear = vexDoom.find(effect => effect.type === "fear");
+assert.ok(vexFear, "Vex Doom must detect the bare verb 'fear'");
+assert.equal(vexFear.durationMinSeconds, 0.75);
+assert.equal(vexFear.durationSeconds, 1.5);
+assert.equal(vexFear.tenacityAffected, true);
+assert.equal(vexDoom.filter(effect => effect.hard).length, 1, "Vex fear/flee variants must represent one hard-CC event");
+
+const statScaledSlow = parseCrowdControlText("Xin Zhao slows the target for 1.5 (+ 0.5 per 100 AP) seconds.");
+assert.equal(statScaledSlow.length, 1);
+assert.equal(statScaledSlow[0].type, "slow");
+assert.equal(statScaledSlow[0].durationSeconds, null, "stat-scaled duration formulas must not be flattened to their base value");
+
 const ahriOrb = parseCrowdControlText("Ahri sends out and pulls back her orb, dealing magic damage on the way out and true damage on the way back.");
 assert.equal(ahriOrb.length, 0, "pulling back an owned projectile must not count as displacement CC");
 

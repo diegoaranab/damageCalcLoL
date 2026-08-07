@@ -22,7 +22,8 @@ const HARD_CC = new Set([
 
 // These expressions intentionally prefer verbs/effect wording over bare nouns. That
 // avoids treating references such as "champions hit by Charm" as if the current
-// ability itself applied a charm.
+// ability itself applied a charm. Bare "fear" is accepted only when it is clearly
+// used as a verb against a target, as in Vex's passive: "fear enemies hit".
 const EFFECT_PATTERNS = [
   { type: "suppression", re: /\b(?:suppress(?:es|ed|ing)?|suppression)\b/gi },
   { type: "stasis", re: /\b(?:stasis|put(?:s|ting)?\s+[^.!?;]{0,30}\s+into stasis)\b/gi },
@@ -35,7 +36,10 @@ const EFFECT_PATTERNS = [
   },
   { type: "polymorph", re: /\b(?:polymorph(?:s|ed|ing)?|turn(?:s|ed|ing)?\s+[^.!?;]{0,25}\s+into a harmless)\b/gi },
   { type: "charm", re: /\b(?:charm(?:s|ed|ing)|to charm)\b/gi },
-  { type: "fear", re: /\b(?:fear(?:s|ed|ing)|terrify|terrifies|terrified|terrifying)\b/gi },
+  {
+    type: "fear",
+    re: /\b(?:fear(?:s|ed|ing)|fear(?=\s+(?:(?:the\s+)?target|them|an?\s+enemy|enemies|champions?|units?)\b)|terrify|terrifies|terrified|terrifying)\b/gi
+  },
   { type: "flee", re: /\b(?:flee|flees|fleeing)\b/gi },
   { type: "taunt", re: /\b(?:taunt(?:s|ed|ing)|to taunt)\b/gi },
   { type: "stun", re: /\b(?:stun(?:s|ned|ning)|to stun)\b/gi },
@@ -90,9 +94,15 @@ export function extractDuration(sentence, matchIndex = 0) {
     sentence
   ];
 
+  // League Wiki frequently inserts metadata such as "(based on level)" between a
+  // duration value list and "seconds". Accept those annotations, but deliberately
+  // reject scaling expressions such as "(+ 0.5 per 100 AP)" rather than pretending
+  // their base value is the complete duration.
+  const qualifier = String.raw`(?:\s*\(based on [^)]{1,65}\))?`;
+  const numberList = String.raw`(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})`;
   const patterns = [
-    /(?:for|lasting|lasts|duration(?: of)?|over)\s+(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})\s*(?:seconds?|secs?|s)\b/i,
-    /(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})\s*(?:seconds?|secs?|s)\s+(?:stun|root|slow|silence|fear|taunt|charm|sleep|suppression|airborne)/i
+    new RegExp(String.raw`(?:for|lasting|lasts|duration(?: of)?|over)\s+${numberList}${qualifier}\s*(?:seconds?|secs?|s)\b`, "i"),
+    new RegExp(String.raw`${numberList}${qualifier}\s*(?:seconds?|secs?|s)\s+(?:stun|root|slow|silence|fear|taunt|charm|sleep|suppression|airborne)`, "i")
   ];
 
   for (const windowText of windows) {
@@ -127,6 +137,13 @@ function isNonChampionOnly(sentence) {
   return /\b(?:enemy\s+)?minions?\b/i.test(sentence) &&
     !/\bchampions?\b/i.test(sentence) &&
     !/\b(?:all|nearby|hit|affected)\s+enemies\b/i.test(sentence);
+}
+
+function effectFamily(type) {
+  // Fear and flee are direction variants of the same forced-movement CC family for
+  // this model. An ability such as Vex P can describe both, but only one happens per
+  // proc, so retaining both would double-count the same hard-CC event.
+  return type === "flee" ? "fear" : type;
 }
 
 export function parseCrowdControlText(rawText) {
@@ -168,13 +185,14 @@ export function parseCrowdControlText(rawText) {
     );
   });
 
-  // One ability should expose one entry per CC type in the final semantic model.
+  // One ability should expose one entry per semantic CC family in the final model.
   // Prefer the occurrence with a known duration over a duplicate prose mention.
   const byType = new Map();
   for (const effect of cleaned) {
-    const current = byType.get(effect.type);
+    const key = effectFamily(effect.type);
+    const current = byType.get(key);
     if (!current || (!Number.isFinite(current.durationSeconds) && Number.isFinite(effect.durationSeconds))) {
-      byType.set(effect.type, effect);
+      byType.set(key, effect);
     }
   }
   return [...byType.values()];
