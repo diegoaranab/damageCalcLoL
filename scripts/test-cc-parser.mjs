@@ -36,6 +36,31 @@ assert.equal(vexFear.durationSeconds, 1.5);
 assert.equal(vexFear.tenacityAffected, true);
 assert.equal(vexDoom.filter(effect => effect.hard).length, 1, "Vex fear/flee variants must represent one hard-CC event");
 
+const threshDeathSentence = parseCrowdControlText(
+  "The scythe catches the first enemy hit to deal magic damage, stun and reveal them for 1.5 seconds, and render them airborne for 0.4 seconds, as well as reduce Death Sentence's current cooldown by 2 seconds."
+);
+const threshHard = threshDeathSentence.filter(effect => effect.hard);
+assert.equal(threshHard.length, 1, "overlapping Thresh Q stun/airborne must count as one effective hard-CC window");
+assert.equal(threshHard[0].type, "stun", "Thresh Q stun should dominate its shorter airborne overlap after Mercs");
+assert.equal(threshHard[0].durationSeconds, 1.5, "Thresh Q stun duration must resolve to 1.5 seconds");
+assert.equal(threshHard[0].tenacityAffected, true);
+assert.ok(
+  threshHard[0].concurrentEffects?.some(effect => effect.type === "airborne" && effect.durationSeconds === 0.4),
+  "Thresh Q should retain its 0.4s Tenacity-unaffected airborne overlap as metadata"
+);
+const threshSummary = summarizeChampionCc([{ effects: threshDeathSentence }]);
+assert.equal(threshSummary.reducibleHardSeconds, 1.5);
+assert.equal(threshSummary.reducibleHardSecondsWithMercs, 1.05);
+assert.equal(threshSummary.hardSecondsSavedByMercs, 0.45);
+
+const velkozDisruption = parseCrowdControlText(
+  "Vel'Koz knocks them up and stuns them for 0.75 seconds."
+);
+const velkozHard = velkozDisruption.filter(effect => effect.hard);
+assert.equal(velkozHard.length, 1, "overlapping equal-duration stun/airborne must not double-count");
+assert.equal(velkozHard[0].type, "airborne", "equal-duration overlap should retain the Tenacity-unaffected component");
+assert.equal(velkozHard[0].durationSeconds, 0.75);
+
 const statScaledSlow = parseCrowdControlText("Xin Zhao slows the target for 1.5 (+ 0.5 per 100 AP) seconds.");
 assert.equal(statScaledSlow.length, 1);
 assert.equal(statScaledSlow[0].type, "slow");
