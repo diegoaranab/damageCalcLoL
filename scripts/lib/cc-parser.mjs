@@ -135,7 +135,7 @@ export function extractDuration(sentence, matchIndex = 0) {
 
 export function reducedDuration(seconds, tenacity = MERCS_TENACITY) {
   if (!Number.isFinite(seconds)) return null;
-  return Math.max(TENACITY_MIN_DURATION_SECONDS, seconds * (1 - tenacity));
+  return Math.min(seconds, Math.max(TENACITY_MIN_DURATION_SECONDS, seconds * (1 - tenacity)));
 }
 
 function isPersistent(sentence) {
