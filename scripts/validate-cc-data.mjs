@@ -47,6 +47,14 @@ assert.ok(skarnerSuppression, "Skarner R suppression must be detected");
 assert.equal(skarnerSuppression.tenacityAffected, false, "Suppression must not be reduced by Tenacity");
 assert.ok(Number.isFinite(skarnerSuppression.durationSeconds) && skarnerSuppression.durationSeconds >= 1, "Skarner suppression duration must resolve");
 
+const vexPassive = effectsFor("Vex", "P");
+const vexFear = vexPassive.find(effect => effect.type === "fear");
+assert.ok(vexFear?.tenacityAffected, "Vex Doom must contain Tenacity-reducible fear");
+assert.equal(vexFear?.durationMinSeconds, 0.75, "Vex Doom minimum fear duration must resolve");
+assert.equal(vexFear?.durationSeconds, 1.5, "Vex Doom maximum fear duration must resolve");
+assert.equal(vexPassive.filter(effect => effect.hard).length, 1, "Vex Doom fear/flee wording must not double-count hard CC");
+assert.ok(champions.Vex?.summary?.reducibleHardSeconds >= 1.5, "Vex must contribute her passive fear to hard-CC seconds");
+
 assert.equal(champions.Lucian?.summary?.totalEffects || 0, 0, "Lucian should not contribute crowd control");
 
 console.log(
