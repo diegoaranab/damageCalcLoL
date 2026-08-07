@@ -88,7 +88,9 @@ function sentenceAround(text, index) {
 function parseNumberList(raw) {
   const values = String(raw)
     .replace(/–|—/g, "-")
-    .split(/\s*(?:\/|to|-)\s*/i)
+    // Meraki normalizes many League Wiki level ranges to colon notation, e.g.
+    // "1.25 : 1.75 (based on level) seconds" for Braum Concussive Blows.
+    .split(/\s*(?:\/|to|-|:)\s*/i)
     .map(value => Number(value))
     .filter(Number.isFinite);
   return values.length ? values : null;
@@ -100,7 +102,7 @@ export function extractDuration(sentence, matchIndex = 0) {
   // reject scaling expressions such as "(+ 0.5 per 100 AP)" rather than pretending
   // their base value is the complete duration.
   const qualifier = String.raw`(?:\s*\(based on [^)]{1,65}\))?`;
-  const numberList = String.raw`(\d+(?:\.\d+)?(?:\s*(?:\/|to|-)\s*\d+(?:\.\d+)?){0,5})`;
+  const numberList = String.raw`(\d+(?:\.\d+)?(?:\s*(?:\/|to|-|:)\s*\d+(?:\.\d+)?){0,5})`;
   const patternSources = [
     String.raw`(?:for|lasting|lasts|duration(?: of)?|over)\s+${numberList}${qualifier}\s*(?:seconds?|secs?|s)\b`,
     String.raw`${numberList}${qualifier}\s*(?:seconds?|secs?|s)\s+(?:stun|root|slow|silence|fear|taunt|charm|sleep|suppression|airborne)`
