@@ -39,7 +39,7 @@ const EFFECT_PATTERNS = [
   { type: "flee", re: /\b(?:flee|flees|fleeing)\b/gi },
   { type: "taunt", re: /\b(?:taunt(?:s|ed|ing)|to taunt)\b/gi },
   { type: "stun", re: /\b(?:stun(?:s|ned|ning)|to stun)\b/gi },
-  { type: "root", re: /\b(?:root(?:s|ed|ing)|to root|snare(?:s|d|ing)|to snare|immobiliz(?:e|es|ed|ing))\b/gi },
+  { type: "root", re: /\b(?:root(?:s|ed|ing)|to root|snare(?:s|d|ing)|to snare)\b/gi },
   { type: "silence", re: /\b(?:silenc(?:e|es|ed|ing)|to silence)\b/gi },
   { type: "ground", re: /\b(?:ground(?:s|ed|ing)|to ground)\b/gi },
   { type: "blind", re: /\b(?:blind(?:s|ed|ing)|to blind)\b/gi },
