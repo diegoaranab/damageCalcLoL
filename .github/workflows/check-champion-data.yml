@@ -93,6 +93,30 @@ jobs:
         if: steps.patch.outputs.changed == 'true'
         run: python -m pip install -r _vendor/lolstaticdata/requirements.txt
 
+      - name: Apply Meraki parser compatibility patch
+        if: steps.patch.outputs.changed == 'true'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("_vendor/lolstaticdata/lolstaticdata/champions/pull_champions_wiki.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''                modifier = Modifier(
+                      values=[0 for _ in range(nvalues)],
+                      units=[lvling for _ in range(nvalues)],
+                  )
+                  modifiers.append(modifier)'''
+          new = '''                # Damage Draft only needs successfully parsed semantic values.
+                  # Current Wiki rows can occasionally omit nvalues; Meraki's fallback
+                  # calls range(None) and aborts the whole roster. Skip only that
+                  # unparseable modifier and retain the rest of the ability data.
+                  continue'''
+          if old not in text:
+              raise SystemExit("Expected Meraki fallback block was not found; review upstream changes.")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          print("Applied narrow Meraki leveling fallback compatibility patch.")
+          PY
+
       - name: Generate current League Wiki ability data
         if: steps.patch.outputs.changed == 'true'
         working-directory: _vendor/lolstaticdata
