@@ -21,6 +21,7 @@ on:
     paths:
       - "scripts/build-cc-data.mjs"
       - "scripts/check-patch.mjs"
+      - "scripts/enable-cc-ui.mjs"
       - "scripts/validate-cc-data.mjs"
       - "scripts/lib/cc-parser.mjs"
       - "scripts/test-cc-parser.mjs"
