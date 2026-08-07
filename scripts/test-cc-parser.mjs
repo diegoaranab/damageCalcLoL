@@ -26,6 +26,18 @@ assert.equal(summary.reducibleHardSeconds, 3);
 assert.equal(summary.reducibleHardSecondsWithMercs, 2.25); // 0.7 + 0.5 floor + 1.05
 assert.equal(summary.hardSecondsSavedByMercs, 0.75);
 
+const ahriOrb = parseCrowdControlText("Ahri sends out and pulls back her orb, dealing magic damage on the way out and true damage on the way back.");
+assert.equal(ahriOrb.length, 0, "pulling back an owned projectile must not count as displacement CC");
+
+const groundNoun = parseCrowdControlText("Aatrox smashes the ground, dealing damage to the first enemy hit.");
+assert.equal(groundNoun.length, 0, "the noun 'ground' must not count as the Grounded debuff");
+
+const minionOnly = parseCrowdControlText("Aatrox fears nearby enemy minions for 3 seconds.");
+assert.equal(minionOnly.length, 0, "minion-only CC must not influence champion defensive boots");
+
+const crossReference = parseCrowdControlText("Flames prioritize enemy champions hit by Charm, then enemy champions.");
+assert.equal(crossReference.length, 0, "an ability-name reference must not be treated as CC applied by this ability");
+
 const noCc = parseCrowdControlText("Lucian fires a shot that deals physical damage.");
 assert.equal(noCc.length, 0);
 
