@@ -11,6 +11,7 @@ assert.equal(lux[0].type, "root");
 assert.equal(lux[0].durationSeconds, 2);
 assert.equal(lux[0].tenacityAffected, true);
 assert.equal(reducedDuration(2), 1.4);
+assert.equal(reducedDuration(0.25), 0.25, "Tenacity must never increase CC already below the 0.5s floor");
 
 const skarner = parseCrowdControlText("Skarner suppresses enemy champions for 1.5 seconds and pulls them with him.");
 assert.ok(skarner.some(effect => effect.type === "suppression" && effect.tenacityAffected === false));
@@ -60,6 +61,12 @@ const velkozHard = velkozDisruption.filter(effect => effect.hard);
 assert.equal(velkozHard.length, 1, "overlapping equal-duration stun/airborne must not double-count");
 assert.equal(velkozHard[0].type, "airborne", "equal-duration overlap should retain the Tenacity-unaffected component");
 assert.equal(velkozHard[0].durationSeconds, 0.75);
+
+const zacShortOverlap = parseCrowdControlText("Zac knocks them up and stuns them for 0.25 seconds.");
+const zacShortHard = zacShortOverlap.filter(effect => effect.hard);
+assert.equal(zacShortHard.length, 1);
+assert.equal(zacShortHard[0].type, "airborne", "a sub-0.5s equal overlap should retain the unaffected component");
+assert.equal(zacShortHard[0].durationSeconds, 0.25);
 
 const statScaledSlow = parseCrowdControlText("Xin Zhao slows the target for 1.5 (+ 0.5 per 100 AP) seconds.");
 assert.equal(statScaledSlow.length, 1);
