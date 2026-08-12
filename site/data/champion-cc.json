@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-08-07T08:47:53.240Z",
-    "patch": "16.15.1",
+    "generatedAt": "2026-08-12T13:42:05.059Z",
+    "patch": "16.16.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
