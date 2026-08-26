@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-08-12T13:42:05.059Z",
-    "patch": "16.16.1",
+    "generatedAt": "2026-08-26T13:14:45.798Z",
+    "patch": "16.17.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -17,9 +17,9 @@
     "champions": 173,
     "wikiChampions": 173,
     "fallbackChampions": 0,
-    "parsedEffects": 457,
-    "knownDurationEffects": 357,
-    "timedCoveragePercent": 78.1,
+    "parsedEffects": 460,
+    "knownDurationEffects": 360,
+    "timedCoveragePercent": 78.3,
     "failures": []
   },
   "champions": {
@@ -3035,7 +3035,7 @@
         {
           "slot": "Q",
           "name": "Terrify",
-          "description": "Passive: While Fiddlesticks has been out of combat for at least 2.5 seconds and is not visible to the enemy team, or is pretending to be an Effigy, its next damaging ability will additionally fear targets hit for a duration.",
+          "description": "Passive: While Fiddlesticks has been out of combat for at least 2.25 seconds and is not visible to the enemy team, or is impersonating an Effigy, its damaging ability will additionally fear targets hit for a duration.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -3460,7 +3460,7 @@
         {
           "slot": "Q",
           "name": "Parrrley",
-          "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike for (200% + 30%) damage.",
+          "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike.",
           "affects": "Enemies, Self",
           "source": "league-wiki-meraki",
           "effects": []
@@ -9927,12 +9927,69 @@
           "effects": []
         },
         {
+          "slot": "Q",
+          "name": "Handshake",
+          "description": "Active: Renata fires a hook in the target direction that deals magic damage to the first enemy hit and roots them for 1 second, during which they are revealed.If the root was applied, Renata forms a tether between her and the target for the same duration, causing Renata to become unable to declare attacks and have her movement speed reduced by 30%.",
+          "affects": "Self, Enemies",
+          "source": "league-wiki-meraki",
+          "effects": [
+            {
+              "type": "root",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 1,
+              "durationMinSeconds": 1,
+              "durationValues": [
+                1
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "Active: Renata fires a hook in the target direction that deals magic damage to the first enemy hit and roots them for 1 second, during which they are revealed.If the root was applied, Renata forms a tether between her and the target for the same duration, causing Renata to become unable to declare attacks and have her movement speed reduced by 30%."
+            },
+            {
+              "type": "stun",
+              "hard": true,
+              "tenacityAffected": true,
+              "durationSeconds": 0.5,
+              "durationMinSeconds": 0.5,
+              "durationValues": [
+                0.5
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "If the thrown target is a champion, all secondary targets hit are stunned for 0.5 seconds."
+            }
+          ]
+        },
+        {
           "slot": "W",
           "name": "Bailout",
           "description": "Active: Renata infuses herself or the target allied champion with a chemtech formula for 5 seconds, granting the target bonus attack speed and bonus movement speed while they are facing nearby visible enemy champions or minions, with both of the bonuses increasing in effectiveness by 0% : 100% (based on seconds elapsed). Bailout's duration resets whenever the target scores a takedown against an enemy champion within 6 seconds of damaging them.",
           "affects": null,
           "source": "league-wiki-meraki",
           "effects": []
+        },
+        {
+          "slot": "E",
+          "name": "Loyalty Program",
+          "description": "Active: Renata sends out chemtech rockets from either side of her that instantly strike targets around her. After 0.429 seconds they converge and travel to the target location as a single missile, striking targets along its path and exploding upon reaching the target location.",
+          "affects": "Allies, Enemies",
+          "source": "league-wiki-meraki",
+          "effects": [
+            {
+              "type": "slow",
+              "hard": false,
+              "tenacityAffected": true,
+              "durationSeconds": 2,
+              "durationMinSeconds": 2,
+              "durationValues": [
+                2
+              ],
+              "durationSource": "description",
+              "persistent": false,
+              "sourceText": "Renata and allies struck are granted a shield for 3 seconds and enemies struck are dealt magic damage and slowed by 30% for 2 seconds."
+            }
+          ]
         },
         {
           "slot": "R",
@@ -9944,17 +10001,17 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 0,
-        "reducibleHardSecondsWithMercs": 0,
+        "reducibleHardSeconds": 1.5,
+        "reducibleHardSecondsWithMercs": 1.2,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 0,
-        "reducibleSoftSecondsWithMercs": 0,
+        "reducibleSoftSeconds": 2,
+        "reducibleSoftSecondsWithMercs": 1.4,
         "unreducibleSoftSeconds": 0,
-        "knownDurationEffects": 0,
+        "knownDurationEffects": 3,
         "unknownDurationEffects": 0,
-        "totalEffects": 0,
-        "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0
+        "totalEffects": 3,
+        "hardSecondsSavedByMercs": 0.3,
+        "softSecondsSavedByMercs": 0.6
       }
     },
     "Renekton": {
@@ -11057,7 +11114,7 @@
         {
           "slot": "E",
           "name": "Molten Burst",
-          "description": "Active: Shyvana launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing magic damage to enemies hit and slowing by 30% them for 2 seconds.",
+          "description": "Active: Shyvana launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing magic damage to enemies hit and slowing them by 30% for 2 seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -11072,7 +11129,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Shyvana launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing magic damage to enemies hit and slowing by 30% them for 2 seconds."
+              "sourceText": "Active: Shyvana launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing magic damage to enemies hit and slowing them by 30% for 2 seconds."
             }
           ]
         },
@@ -12742,7 +12799,7 @@
               "durationValues": null,
               "durationSource": null,
               "persistent": true,
-              "sourceText": "While accursed, they become slowed while facing in the opposite direction of Tryndamere."
+              "sourceText": "While accursed, they become slowed while facing away from Tryndamere."
             }
           ]
         },
@@ -13503,6 +13560,14 @@
               "sourceText": "Passive - Doom: Periodically, Vex empowers her next basic ability to knock down and fear enemies hit for 0.75 / 1 / 1.25 / 1.5 (based on level) seconds, during which they are slowed by 60% : 99% (based on distance from Vex)."
             }
           ]
+        },
+        {
+          "slot": "Q",
+          "name": "Mistral Bolt",
+          "description": "Active: Vex launches a wave of mist in the target direction that deals magic damage to enemies hit. After travelling 500 units, the wave accelerates but also narrows itself.",
+          "affects": "Enemies",
+          "source": "league-wiki-meraki",
+          "effects": []
         },
         {
           "slot": "W",
