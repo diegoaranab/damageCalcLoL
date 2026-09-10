@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-08-26T13:14:45.798Z",
-    "patch": "16.17.1",
+    "generatedAt": "2026-09-10T16:23:10.044Z",
+    "patch": "16.18.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -697,7 +697,7 @@
         {
           "slot": "E",
           "name": "Frostbite",
-          "description": "Passive: Enemies hit by Flash Frost or a fully formed Glacial Storm become Chilled for 3 seconds, refreshing on subsequent hits.",
+          "description": "Passive: Enemies hit by Flash Frost or a fully formed Glacial Storm become Iced for 3 seconds, refreshing on subsequent hits.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -2170,7 +2170,7 @@
         {
           "slot": "E",
           "name": "Twin Fang",
-          "description": "Active: Cassiopeia launches her fangs at the target enemy that deal 52 : 120 (based on level) (+ 10% AP) magic damage. If this kills the target, Twin Fang's mana cost is refunded.",
+          "description": "Active: Cassiopeia launches her fangs at the target enemy that deal 50 : 120 (based on level) (+ 20% AP) magic damage. If this kills the target, Twin Fang's mana cost is refunded.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -4484,7 +4484,7 @@
         {
           "slot": "W",
           "name": "Defiant Dance",
-          "description": "Active: Irelia assumes a defensive stance with her blades to charge for up to 1.5 seconds, during which she reduces incoming physical damage by 40% : 70% (based on level) (+ 7% per 100 AP) and incoming magic damage by 20% : 35% (based on level) (+ 3.5% per 100 AP). Additionally, Defiant Dance's damage increases over the first 0.75 seconds of the channel.",
+          "description": "Active: Irelia assumes a defensive stance with her blades to charge for up to 1.5 seconds, during which she reduces incoming physical damage by 40% : 70% (based on level) (+ 8% per 100 AP) and incoming magic damage by 20% : 35% (based on level) (+ 4% per 100 AP). Additionally, Defiant Dance's damage increases over the first 0.75 seconds of the channel.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -9239,7 +9239,7 @@
         {
           "slot": "Q",
           "name": "Edge of Ixtal",
-          "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 175% damage against monsters.",
+          "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 160% damage against monsters.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -10957,7 +10957,7 @@
         {
           "slot": "W",
           "name": "Jack in the Box",
-          "description": "Active: Shaco summons a box at the target location that becomes stealthed after arming over 2 seconds, lasting for up to 40 (+ 10% AP) seconds. The box is invulnerable and untargetable to enemies while stealthed.",
+          "description": "Active: Shaco summons a box at the target location that becomes stealthed after arming over 2 seconds, lasting for up to 50 (+ 10% AP) seconds. The box is invulnerable and untargetable to enemies while stealthed.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -13723,7 +13723,7 @@
         {
           "slot": "P",
           "name": "Sovereign's Domination",
-          "description": "Innate: Whenever Viego scores an enemy champion takedown while alive and within 3 seconds of damaging them, a Mist Wraith spawns from that champion's corpse for 8 seconds. Viego can basic attack a Mist Wraith to consume it: causing him to blink to its location after winding up for 1 second, during which he is untargetable (except to turrets) and unable to act. He then gains Possession and heals himself for 2% (+ 2.5% per 100 bonus AD) (+ 2% per 100 AP) (+ 5% per 100% bonus attack speed) of the target's maximum health.",
+          "description": "Innate: Whenever Viego scores an enemy champion takedown while alive and within 3 seconds of damaging them, a Mist Wraith spawns from that champion's corpse for 8 seconds. Viego can basic attack a Mist Wraith to consume it: causing him to blink to its location after winding up for 1 second, during which he is untargetable (except to turrets) and unable to act. He then gains Possession and heals himself for 2% (+ 2.5% per 100 bonus AD) (+ 2% per 100 AP) (+ 0.4% per 100 bonus health) (+ 5% per 100% bonus attack speed) of the target's maximum health.",
           "affects": null,
           "source": "league-wiki-meraki",
           "effects": []
@@ -14534,7 +14534,7 @@
         {
           "slot": "Q",
           "name": "Steel Tempest",
-          "description": "Active: Yasuo thrusts his sword in a line in the target direction that deals physical damage to enemies hit and applies on-hit and on-attack effects to the first enemy hit. Steel Tempest's damage based on its AD ratio can critically strike for (180% + 27%) damage.",
+          "description": "Active: Yasuo thrusts his sword in a line in the target direction that deals physical damage to enemies hit and applies on-hit and on-attack effects to the first enemy hit. Steel Tempest's damage based on its AD ratio can critically strike.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -14638,7 +14638,7 @@
         {
           "slot": "Q",
           "name": "Mortal Steel",
-          "description": "Active: Yone thrusts his Steel Sword in a line in the target direction that deals physical damage to enemies hit and applies on-hit and on-attack effects to the first enemy hit. Mortal Steel's damage based on its AD ratio can critically strike for (180% + 27%) damage.",
+          "description": "Active: Yone thrusts his Steel Sword in a line in the target direction that deals physical damage to enemies hit and applies on-hit and on-attack effects to the first enemy hit. Mortal Steel's damage based on its AD ratio can critically strike.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": [
