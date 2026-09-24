@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-09-10T16:23:10.044Z",
-    "patch": "16.18.1",
+    "generatedAt": "2026-09-24T17:08:46.774Z",
+    "patch": "16.19.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -833,7 +833,7 @@
         {
           "slot": "P4",
           "name": "Gravitum",
-          "description": "Basic attacks with Gravitum slow enemies by 30% for 2.5 seconds, decaying to 10% after 0.7 seconds.",
+          "description": "Basic attacks with Gravitum slow enemies by 30% for 2.5 seconds, decaying to 15% after 0.7 seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -865,7 +865,7 @@
         {
           "slot": "Q2",
           "name": "Moonshot",
-          "description": "Active: Aphelios fires a bolt of energy in the target direction that deals 70 : 160 (based on level) (+ 42% : 60% (based on level) bonus AD) (+ 100% AP) physical damage to the first enemy hit.",
+          "description": "Active: Aphelios fires a bolt of energy in the target direction that deals 80 : 170 (based on level) (+ 42% : 60% (based on level) bonus AD) (+ 100% AP) physical damage to the first enemy hit.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -2066,7 +2066,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Enemies hit by the outer half of the cone take additional physical damage, capped at 300 against monsters, and are slowed by 80% decaying over 2 seconds."
+              "sourceText": "Enemies hit by the outer half of the cone take bonus physical damage, capped at 300 against monsters, and are slowed by 80% decaying over 2 seconds."
             }
           ]
         },
@@ -2898,7 +2898,7 @@
         {
           "slot": "W",
           "name": "Allure",
-          "description": "Active: Evelynn curses the target enemy champion or medium or large monster for 5 seconds.",
+          "description": "Active: Evelynn marks the target enemy champion or medium or large monster with a curse for 5 seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -2913,7 +2913,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Evelynn's next basic attack or ability against the accursed target expunges them, slowing them by 45% for 0.75 seconds."
+              "sourceText": "Evelynn's next basic attack or ability hit against the target consumes the mark, slowing them by 45% for 0.75 seconds and refunding Allure's mana cost."
             },
             {
               "type": "charm",
@@ -2928,9 +2928,9 @@
                 2,
                 2.25
               ],
-              "durationSource": "league-wiki:Disable Duration",
+              "durationSource": "league-wiki:Charm Duration",
               "persistent": false,
-              "sourceText": "If the target is cursed for at least 2.5 seconds, the expunge also charms them for a few seconds and the duration of the slow is increased to last for this time, as well as applying additional effects based on the target type."
+              "sourceText": "Empowered Bonus: The target is charmed for a few seconds and the slow duration is increased to the same period."
             }
           ]
         },
@@ -3460,7 +3460,7 @@
         {
           "slot": "Q",
           "name": "Parrrley",
-          "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. Parrrley can critically strike.",
+          "description": "Active: Gangplank fires a shot at the target enemy that deals physical damage, applies on-hit effects as a ranged attack, and triggers on-attack effects. This damage is affected by critical strike modifiers.",
           "affects": "Enemies, Self",
           "source": "league-wiki-meraki",
           "effects": []
@@ -5902,7 +5902,7 @@
         {
           "slot": "P",
           "name": "Unseen Threat",
-          "description": "Innate: Kha'Zix gains Unseen Threat whenever the enemy loses sight of him or he activates Void Assault. Unseen Threat: Kha'Zix empowers his next basic attack against an enemy champion to deal 17 : 136 (based on level) (+ 50% bonus AD) bonus magic damage and slow them by 25% for 2 seconds.",
+          "description": "Innate: Kha'Zix gains Unseen Threat whenever the enemy loses sight of him or he activates Void Assault. Unseen Threat: Kha'Zix empowers his next basic attack against an enemy champion to deal 22 : 141 (based on level) (+ 50% bonus AD) bonus magic damage and slow them by 25% for 2 seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -5934,7 +5934,7 @@
         {
           "slot": "W2",
           "name": "Evolved Spike Racks",
-          "description": "Evolved Bonus: Void Spike now fires three clusters in a cone, slows by 40% and reveals enemy champions hit for 2 seconds. Multiple explosions do not deal additional damage against the same target nor provide Kha'Zix with extra healing.",
+          "description": "Evolved Bonus: Void Spike now fires three clusters in a cone, slows by 40% and reveals enemy champions hit for 2.25 seconds. Multiple explosions do not deal additional damage against the same target nor provide Kha'Zix with extra healing.",
           "affects": "Enemies, Self",
           "source": "league-wiki-meraki",
           "effects": [
@@ -5942,14 +5942,14 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 2,
-              "durationMinSeconds": 2,
+              "durationSeconds": 2.25,
+              "durationMinSeconds": 2.25,
               "durationValues": [
-                2
+                2.25
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Evolved Bonus: Void Spike now fires three clusters in a cone, slows by 40% and reveals enemy champions hit for 2 seconds."
+              "sourceText": "Evolved Bonus: Void Spike now fires three clusters in a cone, slows by 40% and reveals enemy champions hit for 2.25 seconds."
             }
           ]
         },
@@ -5964,7 +5964,7 @@
         {
           "slot": "E2",
           "name": "Evolved Wings",
-          "description": "Evolved Bonus: Leap gains 200 bonus cast range, and the cooldown resets upon scoring a champion takedown.",
+          "description": "Evolved Bonus: Leap gains 300 bonus cast range, and the cooldown resets upon scoring a champion takedown.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -5974,14 +5974,14 @@
         "reducibleHardSeconds": 0,
         "reducibleHardSecondsWithMercs": 0,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 2,
-        "reducibleSoftSecondsWithMercs": 1.4,
+        "reducibleSoftSeconds": 2.25,
+        "reducibleSoftSecondsWithMercs": 1.58,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 1,
         "unknownDurationEffects": 0,
         "totalEffects": 1,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0.6
+        "softSecondsSavedByMercs": 0.67
       }
     },
     "Kindred": {
@@ -6606,7 +6606,7 @@
         {
           "slot": "R",
           "name": "Lilting Lullaby",
-          "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for 2 seconds.",
+          "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for 2.5 seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -6627,14 +6627,14 @@
               "type": "sleep",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 2,
-              "durationMinSeconds": 2,
+              "durationSeconds": 2.5,
+              "durationMinSeconds": 2.5,
               "durationValues": [
-                2
+                2.5
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "After the duration, they fall asleep for 2 seconds."
+              "sourceText": "After the duration, they fall asleep for 2.5 seconds."
             },
             {
               "type": "slow",
@@ -6653,8 +6653,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 2,
-        "reducibleHardSecondsWithMercs": 1.4,
+        "reducibleHardSeconds": 2.5,
+        "reducibleHardSecondsWithMercs": 1.75,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 4.5,
         "reducibleSoftSecondsWithMercs": 3.15,
@@ -6662,7 +6662,7 @@
         "knownDurationEffects": 4,
         "unknownDurationEffects": 0,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0.6,
+        "hardSecondsSavedByMercs": 0.75,
         "softSecondsSavedByMercs": 1.35
       }
     },
@@ -10551,9 +10551,9 @@
           "source": "league-wiki-meraki",
           "effects": [
             {
-              "type": "stun",
+              "type": "airborne",
               "hard": true,
-              "tenacityAffected": true,
+              "tenacityAffected": false,
               "durationSeconds": 1,
               "durationMinSeconds": 1,
               "durationValues": [
@@ -10561,7 +10561,14 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Sejuani hurls a trap at the visible enemy with 4 stacks of Frost closest to the cursor, which deals magic damage, displaces slightly, and stuns them for 1 second."
+              "sourceText": "Active: Sejuani hurls a trap at the visible enemy with 4 stacks of Frost closest to the cursor, which deals magic damage, displaces them slightly, and stuns them for 1 second.",
+              "concurrentEffects": [
+                {
+                  "type": "stun",
+                  "durationSeconds": 1,
+                  "tenacityAffected": true
+                }
+              ]
             }
           ]
         },
@@ -10600,16 +10607,16 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 2,
-        "reducibleHardSecondsWithMercs": 1.4,
-        "unreducibleHardSeconds": 0.5,
+        "reducibleHardSeconds": 1,
+        "reducibleHardSecondsWithMercs": 0.7,
+        "unreducibleHardSeconds": 1.5,
         "reducibleSoftSeconds": 0.25,
         "reducibleSoftSecondsWithMercs": 0.25,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 4,
         "unknownDurationEffects": 3,
         "totalEffects": 7,
-        "hardSecondsSavedByMercs": 0.6,
+        "hardSecondsSavedByMercs": 0.3,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -10957,7 +10964,7 @@
         {
           "slot": "W",
           "name": "Jack in the Box",
-          "description": "Active: Shaco summons a box at the target location that becomes stealthed after arming over 2 seconds, lasting for up to 50 (+ 10% AP) seconds. The box is invulnerable and untargetable to enemies while stealthed.",
+          "description": "Active: Shaco summons a box at the target location that becomes stealthed after arming over 2 seconds, lasting for up to 40 (+ 10% AP) seconds. The box is invulnerable and untargetable to enemies while stealthed.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -13203,7 +13210,7 @@
         {
           "slot": "W",
           "name": "Blighted Quiver",
-          "description": "Passive: Varus' basic attacks are empowered to deal bonus magic damage and apply a stack of Blight on-hit for 6 seconds, refreshing on subsequent applications and stacking up to 3 times. Varus' abilities detonate all Blight stacks on affected enemies hit.",
+          "description": "Passive: Varus' basic attacks on-hit deal bonus magic damage and apply a stack of Blight for 6 seconds, refreshing on subsequent applications and stacking up to 3 times. Varus' abilities detonate all Blight stacks on affected enemies hit.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -14192,7 +14199,7 @@
         {
           "slot": "Q",
           "name": "Crushing Blow",
-          "description": "Active: Wukong empowers his next basic attack within 5 seconds to have an uncancellable windup, gain bonus range, deal bonus physical damage, and inflict armor reduction for 3 seconds.",
+          "description": "Active: Wukong empowers his next basic attack within 5 seconds to have an uncancellable windup, gain bonus range, deal bonus physical damage and then inflict armor reduction for 3 seconds.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -15291,7 +15298,7 @@
               "durationValues": null,
               "durationSource": null,
               "persistent": true,
-              "sourceText": "Zeri can cast Burst Fire while silenced."
+              "sourceText": "Zeri can cast Burst Fire even while silenced."
             }
           ]
         },
