@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-09-24T17:08:46.774Z",
-    "patch": "16.19.1",
+    "generatedAt": "2026-10-07T18:56:23.875Z",
+    "patch": "16.20.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -323,7 +323,7 @@
         {
           "slot": "R",
           "name": "Comeuppance",
-          "description": "Active: Akshan locks onto the target enemy champion and begins channeling for 2.5 seconds, revealing them as well as revealing himself. He gradually stores bullets into his weapon over the duration.",
+          "description": "Active: Akshan locks onto the target enemy champion and begins channeling for 2.5 seconds, revealing them for the duration of the channel plus 2 seconds thereafter, and granting standard sight of his position for the same duration. He gradually stores bullets into his weapon over the duration.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -2513,7 +2513,7 @@
         {
           "slot": "W",
           "name": "Pale Cascade",
-          "description": "Active: Diana grants herself a shield for up to 5 seconds and creates three spheres that orbit her counterclockwise for the same duration, detonating upon contact with an enemy to deal magic damage to nearby enemies.",
+          "description": "Active: Diana grants herself a shield for up to 5 seconds and creates three spheres that orbit her counterclockwise for the same duration, each detonating upon contact with an enemy to deal magic damage to nearby enemies.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -5182,7 +5182,7 @@
         {
           "slot": "W",
           "name": "Path Maker",
-          "description": "Active: K'Sante raises his ntofos defensively and prepares to dash in the target direction, charging for a minimum of 0.4 seconds and up to 1 second. During this time, he gains displacement immunity and 30% damage reduction; additionally, Path Maker's range, stun duration, and All Out bonus true damage modifier increase over the first 0.9 seconds of the channel.",
+          "description": "Active: K'Sante raises his ntofos defensively and prepares to dash in the target direction, charging for a minimum of 0.4 seconds and up to 1 second. During this time, he gains displacement immunity and 25% damage reduction; additionally, Path Maker's range, stun duration, and All Out bonus true damage modifier increase over the first 0.9 seconds of the channel.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -5209,7 +5209,7 @@
               "durationValues": null,
               "durationSource": null,
               "persistent": false,
-              "sourceText": "All Out Bonus: Path Maker no longer applies its knock back and stun, but its damage reduction is increased to 75%, the dash deals 10% : 80% (based on channel time) bonus true damage, and the dash speed is increased by 20%."
+              "sourceText": "All Out Bonus: Path Maker no longer applies its knock back and stun, but its damage reduction is increased to 70%, the dash deals 10% : 80% (based on channel time) bonus true damage, and the dash speed is increased by 20%."
             }
           ]
         },
@@ -5964,7 +5964,7 @@
         {
           "slot": "E2",
           "name": "Evolved Wings",
-          "description": "Evolved Bonus: Leap gains 300 bonus cast range, and the cooldown resets upon scoring a champion takedown.",
+          "description": "Evolved Bonus: Leap gains 300 bonus range, and the cooldown resets upon scoring a champion takedown.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -6017,7 +6017,7 @@
         {
           "slot": "E",
           "name": "Mounting Dread",
-          "description": "Active: Lamb fires a shot at the target enemy that slows them by 30% (+ 5% per 100 AP) for 1 second and marks them for 4 seconds. Her basic attacks against the marked target each apply a stack, refreshing the duration and stacking up to 3 times.",
+          "description": "Active: Lamb fires a shot at the target enemy that slows them by 30% (+ 5% per 100 AP) for 1.5 seconds and marks them for 4 seconds. Her basic attacks against the marked target each apply a stack, refreshing the duration and stacking up to 3 times.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -6025,14 +6025,14 @@
               "type": "slow",
               "hard": false,
               "tenacityAffected": true,
-              "durationSeconds": 1,
-              "durationMinSeconds": 1,
+              "durationSeconds": 1.5,
+              "durationMinSeconds": 1.5,
               "durationValues": [
-                1
+                1.5
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "Active: Lamb fires a shot at the target enemy that slows them by 30% (+ 5% per 100 AP) for 1 second and marks them for 4 seconds."
+              "sourceText": "Active: Lamb fires a shot at the target enemy that slows them by 30% (+ 5% per 100 AP) for 1.5 seconds and marks them for 4 seconds."
             }
           ]
         },
@@ -6049,14 +6049,14 @@
         "reducibleHardSeconds": 0,
         "reducibleHardSecondsWithMercs": 0,
         "unreducibleHardSeconds": 0,
-        "reducibleSoftSeconds": 1,
-        "reducibleSoftSecondsWithMercs": 0.7,
+        "reducibleSoftSeconds": 1.5,
+        "reducibleSoftSecondsWithMercs": 1.05,
         "unreducibleSoftSeconds": 0,
         "knownDurationEffects": 1,
         "unknownDurationEffects": 0,
         "totalEffects": 1,
         "hardSecondsSavedByMercs": 0,
-        "softSecondsSavedByMercs": 0.3
+        "softSecondsSavedByMercs": 0.45
       }
     },
     "Kled": {
@@ -6111,7 +6111,7 @@
         {
           "slot": "W",
           "name": "Violent Tendencies",
-          "description": "Passive: Kled periodically gains Violent Tendencies, which starts expiring upon his next basic attack.",
+          "description": "Passive: Kled periodically gains Violent Tendencies, which starts expiring upon his next basic attack. While incurring its cooldown, Violent Tendencies' current cooldown is reduced by 0.5 seconds on-hit, increased to 1.5 against champions.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -6606,7 +6606,7 @@
         {
           "slot": "R",
           "name": "Lilting Lullaby",
-          "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for 2.5 seconds.",
+          "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for a few seconds.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -6627,14 +6627,16 @@
               "type": "sleep",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 2.5,
+              "durationSeconds": 3,
               "durationMinSeconds": 2.5,
               "durationValues": [
-                2.5
+                2.5,
+                2.75,
+                3
               ],
-              "durationSource": "description",
+              "durationSource": "league-wiki:Sleep Duration",
               "persistent": false,
-              "sourceText": "After the duration, they fall asleep for 2.5 seconds."
+              "sourceText": "After the duration, they fall asleep for a few seconds."
             },
             {
               "type": "slow",
@@ -6653,8 +6655,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 2.5,
-        "reducibleHardSecondsWithMercs": 1.75,
+        "reducibleHardSeconds": 3,
+        "reducibleHardSecondsWithMercs": 2.1,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 4.5,
         "reducibleSoftSecondsWithMercs": 3.15,
@@ -6662,7 +6664,7 @@
         "knownDurationEffects": 4,
         "unknownDurationEffects": 0,
         "totalEffects": 4,
-        "hardSecondsSavedByMercs": 0.75,
+        "hardSecondsSavedByMercs": 0.9,
         "softSecondsSavedByMercs": 1.35
       }
     },
@@ -11593,7 +11595,7 @@
         {
           "slot": "P",
           "name": "Dragon Practice",
-          "description": "Innate: Smolder generates a stack of Dragon Practice each time he hits an enemy champion with an ability, or whenever Super Scorcher Breath kills a minion or monster. His basic abilities deal bonus magic damage based on stacks. Super Scorcher Breath: Deals bonus magic damage equal to 25% : 55% (+ 0% : 9%) (based on critical strike chance) of Dragon Practice stacks. Achooo!: Explosions deal bonus magic damage equal to 55% of Dragon Practice stacks. Flap, Flap, Flap: Attacks each deal bonus magic damage equal to 8% : 12.8% (+ 0% : 1.44%) (based on critical strike chance) of Dragon Practice stacks.",
+          "description": "Innate: Smolder generates a stack of Dragon Practice each time he hits an enemy champion with an ability, or whenever Super Scorcher Breath kills a minion or monster. His basic abilities deal bonus magic damage based on stacks. Super Scorcher Breath: Deals bonus magic damage equal to 25% : 60% (+ 0% : 10.5%) (based on critical strike chance) of Dragon Practice stacks. Achooo!: Explosions deal bonus magic damage equal to 55% of Dragon Practice stacks. Flap, Flap, Flap: Attacks each deal bonus magic damage equal to 8% : 14% (+ 0% : 1.8%) (based on critical strike chance) of Dragon Practice stacks.",
           "affects": "Self/Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -13738,7 +13740,7 @@
         {
           "slot": "Q",
           "name": "Blade of the Ruined King",
-          "description": "Passive: Viego's basic attacks deal bonus physical damage on-hit. This damage can critically strike for (170% + 15%) damage, has a minimum threshold and is capped at 80 against monsters.",
+          "description": "Passive: Viego's basic attacks deal bonus physical damage on-hit. This damage can critically strike for (170% + 21%) damage, has a minimum threshold and is capped at 80 against monsters.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
