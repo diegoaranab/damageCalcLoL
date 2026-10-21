@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-07T18:56:23.875Z",
-    "patch": "16.20.1",
+    "generatedAt": "2026-10-21T17:13:18.140Z",
+    "patch": "16.21.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -1982,7 +1982,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "The next enemy champion that springs the trap is rooted for 1.5 seconds and revealed for 3 seconds, as well as takes additional damage from the Headshot granted by this ability."
+              "sourceText": "The next enemy champion that steps on the trap springs it, causing them to become rooted for 1.5 seconds and revealed for 3 seconds, as well as take additional damage from the Headshot granted by this ability."
             }
           ]
         },
@@ -10845,7 +10845,7 @@
         {
           "slot": "P",
           "name": "Pit Grit",
-          "description": "Innate - Heart of the Half-Beast: Sett regenerates[ an additional 0.075 / 0.25 / 0.5 / 1 / 1.025 / 1.05 (based on level) health every 0.5 seconds per 5% of his missing health. ][ up-to an additional 1.425 / 4.75 / 9.5 / 19 / 19.475 / 19.95 (based on level) health per 0.5 seconds, with the maximum reached at the threshold of 95% missing health. ]",
+          "description": "Innate - Heart of the Half-Beast: Sett regenerates[ an additional 0.075 / 0.25 / 0.5 / 1 / 1.025 / 1.05 (based on level) health every 0.5 seconds per 5% of his missing health. ][ up-to an additional 1.5 / 5 / 10 / 20 / 20.5 / 21 (based on level) health per 0.5 seconds, with the maximum approached as he nears 100% missing health. ]",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -13836,7 +13836,7 @@
         {
           "slot": "Q",
           "name": "Siphon Power",
-          "description": "Active: Viktor throws a draining device at the target enemy that deals magic damage. He also grants himself a shield for 40 : 140 (based on level) (+ 25% AP) for 2.5 seconds and gains Discharge for 4 seconds.",
+          "description": "Active: Viktor throws a draining device at the target enemy that deals magic damage. He also grants himself a shield for 30 : 130 (based on level) (+ 20% AP) for 2 seconds and gains Discharge for 4 seconds.",
           "affects": "Enemies / Self",
           "source": "league-wiki-meraki",
           "effects": []
