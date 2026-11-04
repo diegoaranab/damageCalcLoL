@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-21T17:13:18.140Z",
-    "patch": "16.21.1",
+    "generatedAt": "2026-11-04T19:45:20.456Z",
+    "patch": "16.22.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -6259,7 +6259,7 @@
         {
           "slot": "Q",
           "name": "Sigil of Malice",
-          "description": "Active: LeBlanc projects an orb at the target enemy that deals magic damage and marks them for 3.5 seconds.",
+          "description": "Active: LeBlanc projects an orb at the target enemy that deals magic damage and marks them for 3.5 seconds, with 10 : 146 (based on level) bonus magic damage against minions.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -7399,7 +7399,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "The Sapling explodes upon colliding with an enemy or when it expires, dealing magic damage to nearby enemies, capped at 300 against non-champions, and slowing them by 45% for 2 seconds."
+              "sourceText": "The Sapling explodes upon colliding with an enemy or when it expires, dealing magic damage to nearby enemies, capped at 300 against non-champions, and slowing them by 45% for 2 seconds.A Sapling placed in a brush becomes empowered."
             }
           ]
         },
@@ -7495,7 +7495,7 @@
         {
           "slot": "Q",
           "name": "Radiant Volley",
-          "description": "Active: Mel launches a barrage of luminous bolts at the target location over 0.5 seconds which distribute evenly in the area. Each bolt explodes upon landing to deal magic damage to nearby enemies, with all explosions after the first dealing reduced damage.",
+          "description": "Active: Mel launches a barrage of luminous bolts at the target location over 0.5 seconds which distribute evenly in the area. Each bolt explodes upon landing to deal magic damage to nearby enemies, with the first explosion dealing 60 (+ 25% AP) magic damage and all subsequent ones dealing less damage.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -7503,7 +7503,7 @@
         {
           "slot": "W",
           "name": "Rebuttal",
-          "description": "Active: Mel forms a protective barrier around herself for 0.75 seconds, granting herself a shield for the duration, and gaining 40% bonus movement speed that decays over 0.75 seconds. Additionally, all hostile projectiles sourced from enemy champions that collide with the barrier will be destroyed instantly before Mel fires the same projectiles as her own, either toward or in the direction of the original sources, or toward herself.",
+          "description": "Active: Mel unleashes a refraction nova that expands outward from herself over 0.75 seconds, destroying all hostile projectiles sourced from enemy champions that collide with the nova. Additionally, she grants herself and allies hit by the nova a shield and 10% : 30% (based on level) (+ 4% per 100 AP) bonus movement speed for 2 seconds.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -7511,7 +7511,7 @@
         {
           "slot": "E",
           "name": "Solar Snare",
-          "description": "Active: Mel fires an orb in the target direction that grants sight of its surroundings every 0.25 seconds as it travels. Enemies hit by the orb are dealt magic damage and rooted for 1.5 seconds.",
+          "description": "Active: Mel fires an orb in the target direction that grants sight of its surroundings every 0.25 seconds as it travels. Enemies hit by the orb are dealt magic damage and rooted for a duration. The root duration is increased based on distance the orb travelled.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": [
@@ -7519,14 +7519,18 @@
               "type": "root",
               "hard": true,
               "tenacityAffected": true,
-              "durationSeconds": 1.5,
-              "durationMinSeconds": 1.5,
+              "durationSeconds": 1,
+              "durationMinSeconds": 0.8,
               "durationValues": [
-                1.5
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
               ],
-              "durationSource": "description",
+              "durationSource": "league-wiki:Minimum Root Duration",
               "persistent": false,
-              "sourceText": "Enemies hit by the orb are dealt magic damage and rooted for 1.5 seconds."
+              "sourceText": "Enemies hit by the orb are dealt magic damage and rooted for a duration."
             },
             {
               "type": "slow",
@@ -7539,7 +7543,7 @@
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "Enemies within the field are dealt magic damage and slowed by 30% every 0.125 seconds, lingering for 0.25 seconds after exiting."
+              "sourceText": "Enemies within the field are dealt magic damage and slowed every 0.125 seconds, lingering for 0.25 seconds after exiting."
             }
           ]
         },
@@ -7553,8 +7557,8 @@
         }
       ],
       "summary": {
-        "reducibleHardSeconds": 1.5,
-        "reducibleHardSecondsWithMercs": 1.05,
+        "reducibleHardSeconds": 1,
+        "reducibleHardSecondsWithMercs": 0.7,
         "unreducibleHardSeconds": 0,
         "reducibleSoftSeconds": 0.25,
         "reducibleSoftSecondsWithMercs": 0.25,
@@ -7562,7 +7566,7 @@
         "knownDurationEffects": 2,
         "unknownDurationEffects": 0,
         "totalEffects": 2,
-        "hardSecondsSavedByMercs": 0.45,
+        "hardSecondsSavedByMercs": 0.3,
         "softSecondsSavedByMercs": 0
       }
     },
@@ -10162,7 +10166,7 @@
         {
           "slot": "P",
           "name": "Runic Blade",
-          "description": "Innate: Riven's ability casts generate a stack of Charge for 6 seconds, refreshing on subsequent casts and stacking up to 3 times. Riven's basic attacks are empowered to each consume a stack to deal bonus physical damage equal to 30% : 46.76% (based on level) AD, reduced to[ 50% ][ 15% : 23.38% (based on level) AD ]against structures. Against monsters, it also deals 50 additional bonus physical damage.",
+          "description": "Innate: Riven's ability casts generate a stack of Charge for 6 seconds, refreshing on subsequent casts and stacking up to 3 times. Riven's basic attacks on-attack are empowered to each consume a stack on-hit to deal bonus physical damage equal to 30% : 46.76% (based on level) AD, reduced to[ 50% ][ 15% : 23.38% (based on level) AD ]against structures. Against monsters, it also deals 50 additional bonus physical damage.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -15541,7 +15545,7 @@
         {
           "slot": "Q",
           "name": "Paddle Star!",
-          "description": "Active: Zoe shoots a star in the target direction that explodes upon hitting an enemy, dealing magic damage to nearby enemies hit. The total damage is increased by 0% : 150% (based on distance traveled).",
+          "description": "Active: Zoe shoots a star in the target direction that explodes upon hitting an enemy, dealing magic damage to nearby enemies hit.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
