@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-11-04T19:45:20.456Z",
-    "patch": "16.22.1",
+    "generatedAt": "2026-11-18T20:29:49.978Z",
+    "patch": "16.23.1",
     "source": "League Wiki ability data parsed by Meraki lolstaticdata; Riot Data Dragon for current patch/roster",
     "parserVersion": 5,
     "mercurysTreadsTenacity": 0.3,
@@ -923,7 +923,7 @@
         {
           "slot": "Q6",
           "name": "Sentry",
-          "description": "Active: Aphelios deploys a lunar sentry at the target location that arms after 0.35 seconds, lasting for up to 20 seconds, during which it is inactive and untargetable. The sentry activates if an enemy is within range of it, reducing its duration to 4 seconds and becoming targetable. Sentries have 6 health and take 3 damage per ranged basic attack and 4 damage per hit by abilities. Turret attacks destroy sentries instantly.",
+          "description": "Active: Aphelios deploys a lunar sentry at the target location that arms after 0.35 seconds, lasting for up to 20 seconds, during which it is inactive and untargetable. The sentry activates if an enemy is within range of it, reducing its duration to 4 seconds and becoming targetable. Sentries have 6 health and take ( 4 / 3) damage per basic attack and 4 damage per hit by abilities. Turret attacks destroy sentries instantly.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -5209,7 +5209,7 @@
               "durationValues": null,
               "durationSource": null,
               "persistent": false,
-              "sourceText": "All Out Bonus: Path Maker no longer applies its knock back and stun, but its damage reduction is increased to 70%, the dash deals 10% : 80% (based on channel time) bonus true damage, and the dash speed is increased by 20%."
+              "sourceText": "All Out Bonus: Path Maker no longer applies its knock back and stun, but its damage reduction is increased to 70%, the dash deals 10% : 75% (based on channel time) bonus true damage, and the dash speed is increased by 20%."
             }
           ]
         },
@@ -7399,7 +7399,7 @@
               ],
               "durationSource": "description",
               "persistent": false,
-              "sourceText": "The Sapling explodes upon colliding with an enemy or when it expires, dealing magic damage to nearby enemies, capped at 300 against non-champions, and slowing them by 45% for 2 seconds.A Sapling placed in a brush becomes empowered."
+              "sourceText": "The Sapling explodes upon colliding with an enemy or when it expires, dealing magic damage to nearby enemies and slowing them by 45% for 2 seconds.A Sapling placed in a brush becomes empowered."
             }
           ]
         },
@@ -7487,14 +7487,14 @@
         {
           "slot": "P",
           "name": "Searing Brilliance",
-          "description": "Innate: Mel's basic attacks and abilities apply a stack of Overwhelm for each instance of damage they deal to enemies for 5 seconds, refreshing on subsequent damage instances and stacking infinitely.",
+          "description": "Innate: Mel's basic attacks and abilities apply a stack of Overwhelm for each instance of damage they deal to enemies for 5 seconds, refreshing on subsequent applications and stacking infinitely.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
         },
         {
           "slot": "Q",
-          "name": "Radiant Volley",
+          "name": "Radiant Barrage",
           "description": "Active: Mel launches a barrage of luminous bolts at the target location over 0.5 seconds which distribute evenly in the area. Each bolt explodes upon landing to deal magic damage to nearby enemies, with the first explosion dealing 60 (+ 25% AP) magic damage and all subsequent ones dealing less damage.",
           "affects": "Enemies",
           "source": "league-wiki-meraki",
@@ -7503,8 +7503,8 @@
         {
           "slot": "W",
           "name": "Rebuttal",
-          "description": "Active: Mel unleashes a refraction nova that expands outward from herself over 0.75 seconds, destroying all hostile projectiles sourced from enemy champions that collide with the nova. Additionally, she grants herself and allies hit by the nova a shield and 10% : 30% (based on level) (+ 4% per 100 AP) bonus movement speed for 2 seconds.",
-          "affects": "Self, Enemies",
+          "description": "Active: Mel unleashes a refraction nova within her surrounding area that lasts 0.75 seconds, expanding within the duration. The nova destroys all hostile non- turret projectiles that collide with it. Mel and allies that come into contact with it are granted a shield and 10% : 30% (based on level) (+ 4% per 100 AP) bonus movement speed, both lasting 2 seconds.",
+          "affects": "Self, Allies, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
         },
@@ -10857,7 +10857,7 @@
         {
           "slot": "Q",
           "name": "Knuckle Down",
-          "description": "Active: Sett empowers his next two basic attacks within 5 seconds to gain 50 bonus range and deal bonus physical damage, capped at 400 total damage of each attack against monsters.",
+          "description": "Active: Sett empowers his next two basic attacks within 5 seconds to gain 50 bonus range and deal modified physical damage. Knuckle Down's damage of each attack, excluding the base AD ratio, is capped at 400 against monsters.",
           "affects": "Self, Enemies",
           "source": "league-wiki-meraki",
           "effects": []
@@ -12903,7 +12903,7 @@
         {
           "slot": "R",
           "name": "Destiny",
-          "description": "Active: Twisted Fate marks all targetable enemy champions, revealing them for a duration. Destiny can be recast after 0.5 seconds within the duration.",
+          "description": "Active: Twisted Fate marks all enemy champions, revealing them for a duration. Destiny can be recast after 0.5 seconds within the duration.",
           "affects": "Enemies, Allies, Self",
           "source": "league-wiki-meraki",
           "effects": []
@@ -13508,7 +13508,7 @@
               ],
               "durationSource": "description",
               "persistent": true,
-              "sourceText": "The beam deals magic damage to enemies hit every 0.2 seconds, and slows them by 20%, lingering for 1 second."
+              "sourceText": "The beam deals magic damage to enemies hit every 0.25 seconds, and slows them by 20%, lingering for 1 second."
             }
           ]
         }
